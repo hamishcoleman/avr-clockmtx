@@ -1,6 +1,8 @@
 
 all:	clockmtx.hex
 
+clockmtx.elf: clockmtx.o serial.o
+
 MCU:=atmega8
 
 ISP:=USBasp
@@ -13,7 +15,7 @@ OBJCOPY:=avr-objcopy
 burn:	clockmtx.hex
 	avrdude -c $(ISP) -p $(MCU_AVRDUDE) -U flash:w:$<:i
 
-%.elf: %.c
+%.elf: %.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.hex: %.elf

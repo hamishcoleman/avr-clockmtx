@@ -17,6 +17,8 @@
 #include <avr/sleep.h>
 #include <avr/eeprom.h>
 
+#include "serial.h"
+
 #define byte uint8_t
 #define word uint16_t
 
@@ -208,6 +210,9 @@ int main(void) {  //============================================================
   keysetup();
   clocksetup();
 
+  serial_init(12);
+  serial_write("Hello World\r\n",13);
+
   for (byte i=0;i<32;i++) leds[i]=0b01010101<<(i%2);  HTsendscreen();
 
 
@@ -219,7 +224,7 @@ int main(void) {  //============================================================
     else if (key3) {if (!changing) {changing=1; bright=(bright+1)%4; HTbrightness(brights[bright]);} } //only once per press
     else changing=0;
 
-    if(clockhandler()) { renderclock(); HTsendscreen(); }
+    if(clockhandler()) { renderclock(); HTsendscreen(); serial_putc('A'); }
   }
   return(0);
 }//main
