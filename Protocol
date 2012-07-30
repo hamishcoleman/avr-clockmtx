@@ -18,3 +18,9 @@ SET TZ OFFSET	2		"OAEDT,123"	"OAEDT,123"
 GET CAL		0	1	"c"		"C123"
 SET CAL		1		"C123"		"C123"
 
+Future?:
+Brightness
+Unique serial number
+Scroll message
+next TZ offset is "x" at time "y"
+
