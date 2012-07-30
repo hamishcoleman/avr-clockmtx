@@ -1,7 +1,7 @@
 
 all:	clockmtx.hex
 
-clockmtx.elf: clockmtx.o serial.o
+clockmtx.elf: clockmtx.o serial.o clock.o
 
 MCU:=atmega8
 

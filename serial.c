@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include "serial.h"
+#include "clock.h"
 
 void serial_init(unsigned int ubrr) {
         /* Set baud rate */
@@ -55,12 +56,6 @@ unsigned char cmd;
 unsigned char param1[PARAM_SIZE];
 unsigned char param2[PARAM_SIZE];
 unsigned char count;
-
-/* TODO - these are global values and should move out of here */
-unsigned long time;
-unsigned char tz[6];
-unsigned long offset;
-unsigned long cal;
 
 void serial_docmd(unsigned char ch) {
 	char buf[11];
