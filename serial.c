@@ -22,8 +22,6 @@ void serial_init(unsigned int ubrr) {
         UBRRL = (unsigned char)ubrr;
         /* Enable receiver and transmitter */
         UCSRB = (1<<RXCIE)|(1<<RXEN)|(1<<TXEN);
-        /* half the ubrr */
-        UCSRA = (1<<U2X);
         /* Set frame format: 8data, 2stop bit */
         UCSRC = (1<<URSEL)|(3<<UCSZ0);
 }

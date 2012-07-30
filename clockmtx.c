@@ -8,11 +8,9 @@
 
 
 
-#define F_CPU 1000000
 
 #include <avr/pgmspace.h>
 #include <avr/io.h>
-#include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include <avr/eeprom.h>
