@@ -25,7 +25,7 @@ fuse:
 		-U lfuse:w:$(LFUSE):m \
 		-U hfuse:w:$(HFUSE):m
 
-size:	$(TARGET_ELF) $(OBJECT)
+size:	$(OBJECT) $(TARGET_ELF)
 	avr-size $^
 
 clean:
