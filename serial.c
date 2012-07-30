@@ -58,7 +58,7 @@ unsigned char count;
 
 /* TODO - these are global values and should move out of here */
 unsigned long time;
-unsigned char tz[5];
+unsigned char tz[6];
 unsigned long offset;
 unsigned long cal;
 
@@ -73,11 +73,41 @@ void serial_docmd(unsigned char ch) {
 			serial_putc('I');
 			/* TODO - output more */
 			break;
+		case 'C':	/* Set calibration */
+			cal = atol(param1);
+			/* TODO - store to eeprom */
+		case 'c':	/* Get calibration */
+			serial_putc('C');
+			ltoa(cal,p,10);
+			serial_write(p,strlen(p));
+			break;
 		case 'T':	/* Set Time */
 			time = atol(param1);
 		case 't':	/* Get Time */
 			serial_putc('T');
 			ltoa(time,p,10);
+			serial_write(p,strlen(p));
+			break;
+		case 'Z':	/* Set TZ name */
+			strncpy(tz,param1,sizeof(tz));
+			/* TODO - store to eeprom */
+		case 'z':	/* Get TZ name */
+			serial_putc('Z');
+			serial_write(tz,strlen(tz));
+			break;
+		case 'O':	/* Set Offset */
+			if (!strcmp(tz,param1)) {
+				offset = atol(param2);
+				/* TODO - store to eeprom */
+			} else {
+				/* Ignore commands not for us */
+				break;
+			}
+		case 'o':	/* Get Offset */
+			serial_putc('O');
+			serial_write(tz,strlen(tz));
+			serial_putc(',');
+			ltoa(offset,p,10);
 			serial_write(p,strlen(p));
 			break;
 	}
