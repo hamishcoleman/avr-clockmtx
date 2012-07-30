@@ -10,6 +10,9 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "serial.h"
 
 void serial_init(unsigned int ubrr) {
@@ -53,13 +56,31 @@ unsigned char param1[PARAM_SIZE];
 unsigned char param2[PARAM_SIZE];
 unsigned char count;
 
+/* TODO - these are global values and should move out of here */
+unsigned long time;
+unsigned char tz[5];
+unsigned long offset;
+unsigned long cal;
+
 void serial_docmd(unsigned char ch) {
-	serial_write("Got: ",5);
-	serial_putc(cmd);
-	serial_putc(',');
-	serial_write(param1,sizeof(param1));
-	serial_putc(',');
-	serial_write(param2,sizeof(param2));
+	char buf[11];
+	char *p = buf;
+	switch(cmd) {
+		case 'p':	/* PING */
+			serial_putc('P');
+			break;
+		case 'i':	/* ID */
+			serial_putc('I');
+			/* TODO - output more */
+			break;
+		case 'T':	/* Set Time */
+			time = atol(param1);
+		case 't':	/* Get Time */
+			serial_putc('T');
+			ltoa(time,p,10);
+			serial_write(p,strlen(p));
+			break;
+	}
 	serial_putc('\r');
 	serial_putc('\n');
 }
@@ -93,7 +114,7 @@ ISR(USART_RXC_vect) {
 		p[count++]=ch;
 	}
 
-	if (ch == '\r' || ch == '\n') {
+	if (ch == '\r') {
 		p[count]=0;
 		state=DONE;
 	}
