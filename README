@@ -1,0 +1,40 @@
+A remotely managable clock display
+
+
+Deal Extreme dx104306
+JY-MCU 3208
+
+Atmega 8	Microcontroller
+
+HT1632C		LED controller
+
+Schematic found:
+	http://ljy99731.13.dns222.net/Download/3208_clock_new.PDF (missing)
+
+Initial code from:
+	http://club.dx.com/forums/Forums.dx/threadid.1118199
+	http://lux.yi.org/clockmtx.c
+
+10 pin connector is standard, with txd on 6 and rxd on 8
+
+Verify ISP connections:
+	avrdude -c USBasp -p m8 -v
+
+avrdude: Device signature = 0x1e9307
+avrdude: safemode: lfuse reads as E1
+avrdude: safemode: hfuse reads as C9
+
+Read original data:
+	avrdude -c USBasp -p m8 -U eeprom:r:original.eeprom:r
+	avrdude -c USBasp -p m8 -U flash:r:original.flash:r
+	avrdude -c USBasp -p m8 -U flash:r:original.hex:i
+
+Original eeprom is empty!
+
+Check Fuses with http://www.engbedded.com/fusecalc/
+	1Mhz Internal Osc
+	6Ck start up
+	No Brownout
+	No Boot reset
+	SPI enabled
+
