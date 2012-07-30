@@ -20,6 +20,7 @@ C	SET CAL		1		"C123"		"C123"
 
 Future?:
 Brightness
+Colon Blink control
 Unique serial number
 Scroll message
 next TZ offset is "x" at time "y"
