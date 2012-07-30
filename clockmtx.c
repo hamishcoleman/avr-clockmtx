@@ -158,8 +158,6 @@ int main(void) {  //============================================================
   for (byte i=0;i<32;i++) leds[i]=0b01010101<<(i%2);  HTsendscreen();
 
 
-  hour=7;minute=40;
-
   while(1){ 
          if (key1) {if (changing>250) incsec(20); else {changing++; incsec(1);} }
     else if (key2) {if (changing>250) decsec(20); else {changing++; decsec(1);} }
