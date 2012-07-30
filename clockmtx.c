@@ -196,7 +196,7 @@ void renderclock(void) {
   leds[col++]=0;
   for (byte i=0;i<6;i++) leds[col++]=pgm_read_byte(&bigdigits[minute%10][i]);
   leds[col++]=0;
-  leds[col++]=(sec>6) +((sec>13)<<1) +((sec>20)<<2) +((sec>26)<<3) +((sec>33)<<4) +((sec>40)<<5) +((sec>46)<<6) +((sec>53)<<7);
+  leds[col++]=0;
 }
 
 
