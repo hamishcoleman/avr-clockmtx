@@ -40,3 +40,9 @@ Check Fuses with http://www.engbedded.com/fusecalc/
 
 Change clock to 2Mhz
 	lfuse E2
+
+
+echo -e "\01T`date +%s`\r" >/dev/ttyUSB0
+echo -e "\01ZAEST\r" >/dev/ttyUSB0
+echo -e "\01OEST,36000\r" >/dev/ttyUSB0
+
