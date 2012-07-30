@@ -139,19 +139,17 @@ ISR(USART_RXC_vect) {
 			break;
 	}
 
-	if (count<=PARAM_SIZE) {
-		serial_putc(ch);
-		p[count++]=ch;
-	}
-
 	if (ch == '\r') {
 		p[count]=0;
 		state=DONE;
-	}
-	if (ch == ',') {
+	} else if (ch == ',') {
+		serial_putc(ch);
 		p[count]=0;
 		count = 0;
 		state = PARAM2;
+	} else if (count<=PARAM_SIZE) {
+		serial_putc(ch);
+		p[count++]=ch;
 	}
 
 	if (state == DONE) {
