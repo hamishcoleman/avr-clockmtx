@@ -38,3 +38,5 @@ Check Fuses with http://www.engbedded.com/fusecalc/
 	No Boot reset
 	SPI enabled
 
+Change clock to 2Mhz
+	lfuse E2

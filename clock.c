@@ -20,6 +20,7 @@ unsigned char cal;
 void clock_init(void) {
 	/* TODO - load tz, offset and cal from eeprom */
 	ASSR |= (1<<AS2);
+	/* TODO - try again to use the CTC mode */
 	/* TCCR2 = (1<<WGM21) | (6<<CS20);	/* CTC mode and clock/256 */
 	/* OCR2 = 128;		/* TODO - set this from cal */
 	TCCR2=0b00000101;

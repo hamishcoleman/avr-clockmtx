@@ -1,7 +1,7 @@
 
 all:	clockmtx.hex
 
-clockmtx.elf: clockmtx.o serial.o clock.o
+clockmtx.elf: clockmtx.o serial.o clock.o ht1632c.o
 
 MCU:=atmega8
 LFUSE:=0xe2
