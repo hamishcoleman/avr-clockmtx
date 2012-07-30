@@ -148,6 +148,7 @@ ISR(TIMER2_OVF_vect) {     //timer2-overflow-int
 void incsec(byte add) {
   sec+=add;
   while (sec>=60) { 
+    serial_putc('.');
     sec-=60;  minute++;
     while (minute>=60) {
       minute -= 60;  hour++;
@@ -224,7 +225,7 @@ int main(void) {  //============================================================
     else if (key3) {if (!changing) {changing=1; bright=(bright+1)%4; HTbrightness(brights[bright]);} } //only once per press
     else changing=0;
 
-    if(clockhandler()) { renderclock(); HTsendscreen(); serial_putc('A'); }
+    if(clockhandler()) { renderclock(); HTsendscreen(); }
   }
   return(0);
 }//main
