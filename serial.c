@@ -69,11 +69,11 @@ void serial_docmd(unsigned char ch) {
 			/* TODO - output more */
 			break;
 		case 'C':	/* Set calibration */
-			cal = atol(param1);
+			cal = atoi(param1);
 			/* TODO - store to eeprom */
 		case 'c':	/* Get calibration */
 			serial_putc('C');
-			ltoa(cal,p,10);
+			itoa(cal,p,10);
 			serial_write(p,strlen(p));
 			break;
 		case 'T':	/* Set Time */

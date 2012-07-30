@@ -18,6 +18,7 @@
 #include <avr/eeprom.h>
 
 #include "serial.h"
+#include "clock.h"
 
 #define byte uint8_t
 #define word uint16_t
@@ -123,65 +124,6 @@ void HTbrightness(byte b) {
   HTcommand(HTsetbright + ((b&15)<<1) );
 }
 
-//------------------------------------------------------------------------------------- CLOCK ------------------
-
-
-volatile byte sec=5;
-byte sec0=200, minute, hour, day, month; word year;
-
-
-inline void clocksetup() {  // CLOCK, interrupt every second
-  ASSR |= (1<<AS2);    //timer2 async from external quartz
-  TCCR2=0b00000101;    //normal,off,/128; 32768Hz/256/128 = 1 Hz
-  TIMSK |= (1<<TOIE2); //enable timer2-overflow-int
-  sei();               //enable interrupts
-}
-
-
-// CLOCK interrupt
-ISR(TIMER2_OVF_vect) {     //timer2-overflow-int
-  sec++;
-}
-
-
-
-void incsec(byte add) {
-  sec+=add;
-  while (sec>=60) { 
-    serial_putc('.');
-    sec-=60;  minute++;
-    while (minute>=60) {
-      minute -= 60;  hour++;
-      while (hour >=24) {
-        hour-=24;  day++;
-      }//24hours
-    }//60min
-  }//60sec
-}
-
-void decsec(byte sub) {
-  while (sub>0) {
-    if (sec>0) sec--; 
-    else {
-      sec=59; 
-      if (minute>0) minute--; 
-      else {
-        minute=59; 
-        if (hour>0) hour--;
-        else {hour=23;day--;}
-      }//hour
-    }//minute
-    sub--;
-  }//sec
-}
-
-byte clockhandler(void) {
-  if (sec==sec0) return 0;   //check if something changed
-  sec0=sec;
-  incsec(0);  //just carry over
-  return 1;
-}
-
 //-------------------------------------------------------------------------------------- clock render ----------
 
 void renderclock(void) {
@@ -209,7 +151,8 @@ int main(void) {  //============================================================
   HTpinsetup();
   HTsetup();
   keysetup();
-  clocksetup();
+
+  clock_init();
 
   serial_init(12);
   serial_write("Hello World\r\n",13);

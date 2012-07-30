@@ -7,9 +7,17 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
-extern unsigned long time;
+extern volatile unsigned long time;
 extern unsigned char tz[6];
 extern unsigned long offset;
-extern unsigned long cal;
+extern unsigned char cal;
+
+void clock_init(void);
+
+extern char sec, minute, hour;
+
+void incsec(char);
+void decsec(char);
+char clockhandler(void);
 
 #endif
