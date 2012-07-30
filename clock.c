@@ -10,19 +10,16 @@
 
 #include "clock.h"
 #include "serial.h"
+#include "config.h"
 
 /* these are the global clock values */
 unsigned volatile long time;
-unsigned char tz[6];
-unsigned long offset;
-unsigned char cal;
 
 void clock_init(void) {
-	/* TODO - load tz, offset and cal from eeprom */
 	ASSR |= (1<<AS2);
 	/* TODO - try again to use the CTC mode */
 	/* TCCR2 = (1<<WGM21) | (6<<CS20);	/* CTC mode and clock/256 */
-	/* OCR2 = 128;		/* TODO - set this from cal */
+	/* OCR2 = 128;		/* TODO - set this from config.cal */
 	TCCR2=0b00000101;
 	TIMSK |= (1<<TOIE2);	/* timer2 overflow interrupt enable */
 	sei();
@@ -43,7 +40,7 @@ void time2hms(void) {
 	unsigned long time0 = time; /* Capture the current time */
 	unsigned long secs,mins;
 
-	time0 += offset;
+	time0 += config.offset;
 
 	secs   = time0 % (24L*60*60);
 	sec    = secs % 60;

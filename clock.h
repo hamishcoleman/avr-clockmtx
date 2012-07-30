@@ -8,9 +8,6 @@
 #define CLOCK_H
 
 extern volatile unsigned long time;
-extern unsigned char tz[6];
-extern unsigned long offset;
-extern unsigned char cal;
 
 void clock_init(void);
 

@@ -15,6 +15,7 @@
 
 #include "serial.h"
 #include "clock.h"
+#include "config.h"
 
 void serial_init(unsigned int ubrr) {
         /* Set baud rate */
@@ -67,11 +68,11 @@ void serial_docmd(unsigned char ch) {
 			/* TODO - output more */
 			break;
 		case 'C':	/* Set calibration */
-			cal = atoi(param1);
-			/* TODO - store to eeprom */
+			config.cal = atoi(param1);
+			config_dirty();
 		case 'c':	/* Get calibration */
 			serial_putc('C');
-			itoa(cal,p,10);
+			itoa(config.cal,p,10);
 			serial_write(p,strlen(p));
 			break;
 		case 'T':	/* Set Time */
@@ -82,25 +83,25 @@ void serial_docmd(unsigned char ch) {
 			serial_write(p,strlen(p));
 			break;
 		case 'Z':	/* Set TZ name */
-			strncpy(tz,param1,sizeof(tz));
-			/* TODO - store to eeprom */
+			strncpy(config.tz,param1,sizeof(config.tz));
+			config_dirty();
 		case 'z':	/* Get TZ name */
 			serial_putc('Z');
-			serial_write(tz,strlen(tz));
+			serial_write(config.tz,strlen(config.tz));
 			break;
 		case 'O':	/* Set Offset */
-			if (!strcmp(tz,param1)) {
-				offset = atol(param2);
-				/* TODO - store to eeprom */
+			if (!strcmp(config.tz,param1)) {
+				config.offset = atol(param2);
+				config_dirty();
 			} else {
 				/* Ignore commands not for us */
 				break;
 			}
 		case 'o':	/* Get Offset */
 			serial_putc('O');
-			serial_write(tz,strlen(tz));
+			serial_write(config.tz,strlen(config.tz));
 			serial_putc(',');
-			ltoa(offset,p,10);
+			ltoa(config.offset,p,10);
 			serial_write(p,strlen(p));
 			break;
 	}

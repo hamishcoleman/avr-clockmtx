@@ -18,6 +18,7 @@
 #include "serial.h"
 #include "clock.h"
 #include "ht1632c.h"
+#include "config.h"
 
 #define byte uint8_t
 #define word uint16_t
@@ -65,6 +66,7 @@ int main(void) {  //============================================================
   HTsetup();
   keysetup();
 
+  config_load();
   clock_init();
 
   serial_init(12);
@@ -79,7 +81,11 @@ int main(void) {  //============================================================
     else if (key3) {if (!changing) {changing=1; bright=(bright+1)%4; HTbrightness(brights[bright]);} } //only once per press
     else changing=0;
 
-    if(clockhandler()) { renderclock(); HTsendscreen(); }
+    if (clockhandler()) {
+	renderclock();
+	HTsendscreen();
+	config_save_if_dirty();
+    }
   }
   return(0);
 }//main
