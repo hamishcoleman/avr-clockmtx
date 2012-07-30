@@ -37,4 +37,4 @@ $(TARGET_ELF): $(OBJECT)
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.hex: %.elf
-	$(OBJCOPY) -O ihex $^ $@
+	$(OBJCOPY) --remove-section .eeprom -O ihex $^ $@
