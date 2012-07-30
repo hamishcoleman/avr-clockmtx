@@ -59,6 +59,7 @@ unsigned char count;
 void serial_docmd(unsigned char ch) {
 	char buf[11];
 	char *p = buf;
+	serial_putc('=');
 	switch(cmd) {
 		case 'p':	/* PING */
 			serial_putc('P');
