@@ -1,0 +1,20 @@
+Communications with the clock:
+
+All comms start with an attention char "^A" (0x1), followed by a command
+char, followed by zero to two parameters. Parameters are up to 10
+chars long and are separated by a comma or terminated with a CR
+
+
+name		inparam	out	in		out
+PING		0		"p"		"P"
+PONG			0	"P"
+GET ID/VER	0		"i"		"Ixyz"
+GET TIME	0	1	"t"		"T123"
+SET TIME	1		"T123"		"T123"
+GET TZ		0	1	"z"		"zAEDT"
+SET TZ		1		"ZAEDT"		"ZAEDT"
+GET TZ OFFSET	1	2	"oAEDT"		"oAEDT,123"
+SET TZ OFFSET	2		"OAEDT,123"	"OAEDT,123"
+GET CAL		0	1	"c"		"C123"
+SET CAL		1		"C123"		"C123"
+
