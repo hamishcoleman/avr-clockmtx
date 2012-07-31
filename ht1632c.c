@@ -20,12 +20,12 @@
 #define HTclk    4
 #define HTdata   5
 
-#define HTclk0    HTport&=~(1<<HTclk)
-#define HTclk1    HTport|= (1<<HTclk)
-#define HTstrobe0 HTport&=~(1<<HTstrobe)
-#define HTstrobe1 HTport|= (1<<HTstrobe)
-#define HTdata0   HTport&=~(1<<HTdata)
-#define HTdata1   HTport|= (1<<HTdata)
+#define HTclk0    HTport&=~(_BV(HTclk))
+#define HTclk1    HTport|= (_BV(HTclk))
+#define HTstrobe0 HTport&=~(_BV(HTstrobe))
+#define HTstrobe1 HTport|= (_BV(HTstrobe))
+#define HTdata0   HTport&=~(_BV(HTdata))
+#define HTdata1   HTport|= (_BV(HTdata))
         // set as output and all high
 
 
@@ -80,7 +80,7 @@ void HTsendscreen(void) {
 }
 
 void HTpinsetup() {
-	HTddr |=(1<<HTstrobe)|(1<<HTclk)|(1<<HTdata); HTport|=(1<<HTstrobe)|(1<<HTclk)|(1<<HTdata);
+	HTddr |=_BV(HTstrobe)|_BV(HTclk)|_BV(HTdata); HTport|=_BV(HTstrobe)|_BV(HTclk)|_BV(HTdata);
 }
 
 void HTsetup() {  //setting up the display

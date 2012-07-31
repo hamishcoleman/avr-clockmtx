@@ -33,10 +33,10 @@ PROGMEM const byte bigdigits[10][6] = {
   {0x76,0x89,0x89,0x89,0x89,0x76}, {0x46,0x89,0x89,0x89,0x89,0x7e}, // 8,9
 };
 
-#define key1 ((PIND&(1<<7))==0)
-#define key2 ((PIND&(1<<6))==0)
-#define key3 ((PIND&(1<<5))==0)
-#define keysetup() do{ DDRD&=0xff-(1<<7)-(1<<6)-(1<<5); PORTD|=(1<<7)+(1<<6)+(1<<5); }while(0)  //input, pull up
+#define key1 ((PIND&_BV(7))==0)
+#define key2 ((PIND&_BV(6))==0)
+#define key3 ((PIND&_BV(5))==0)
+#define keysetup() do{ DDRD&=0xff-_BV(7)-_BV(6)-_BV(5); PORTD|=_BV(7)+_BV(6)+_BV(5); }while(0)  //input, pull up
 
 //-------------------------------------------------------------------------------------- clock render ----------
 

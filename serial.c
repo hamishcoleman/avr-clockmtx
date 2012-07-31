@@ -22,15 +22,15 @@ void serial_init(unsigned int ubrr) {
         UBRRH = (unsigned char)(ubrr>>8);
         UBRRL = (unsigned char)ubrr;
         /* Enable receiver and transmitter */
-        UCSRB = (1<<RXCIE)|(1<<RXEN)|(1<<TXEN);
+        UCSRB = _BV(RXCIE)| _BV(RXEN)| _BV(TXEN);
         /* Set frame format: 8data, 2stop bit */
-        UCSRC = (1<<URSEL)|(3<<UCSZ0);
+        UCSRC = _BV(URSEL)| (3<<UCSZ0);
 }
 
 void serial_putc(unsigned char data) {
         /* Wait for empty transmit buffer */
-        while ( !( UCSRA & (1<<UDRE)) )
-                ;
+        loop_until_bit_is_set(UCSRA,UDRE);
+
         /* Put data into buffer, sends the data */
         UDR = data;
 }
