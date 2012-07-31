@@ -12,7 +12,7 @@ MCU_AVRDUDE:=m8
 all:	$(TARGET) size
 
 CC:=avr-gcc
-CFLAGS:=-Os -std=c99 -mmcu=$(MCU)
+CFLAGS:=-g -Os -std=c99 -mmcu=$(MCU)
 OBJCOPY:=avr-objcopy
 
 TARGET_ELF:=$(basename $(TARGET)).elf
