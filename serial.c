@@ -77,6 +77,7 @@ void serial_docmd(unsigned char ch) {
 			serial_write(p,strlen(p));
 			break;
 		case 'T':	/* Set Time */
+			/* NOTE: 32bit value, set from interrupt context */
 			time = atol(param1);
 		case 't':	/* Get Time */
 			serial_putc('T');
