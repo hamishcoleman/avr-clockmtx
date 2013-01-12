@@ -42,11 +42,14 @@ Check Fuses with http://www.engbedded.com/fusecalc/
 Change clock to 2Mhz
 	lfuse E2
 
+P=/dev/ttyUSB0
+stty 9600 <$P
 
-echo -e "\01T`date +%s`\r" >/dev/ttyUSB0
-echo -e "\01ZAEST\r" >/dev/ttyUSB0
-echo -e "\01OEST,36000\r" >/dev/ttyUSB0
+echo -e "\01t\r"	   >$P # get time
+echo -e "\01o\r"	   >$P # get tz and offset
 
-echo -e "\01t\r" >/dev/ttyUSB0	# get time
-echo -e "\01o\r" >/dev/ttyUSB0	# get tz and offset
+echo -e "\01T`date +%s`\r" >$P # set time
+echo -e "\01ZAEST\r"	   >$P # set tz name
+echo -e "\01OEST,36000\r"  >$P # set offset
+
 

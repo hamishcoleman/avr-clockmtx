@@ -12,7 +12,7 @@ struct config {
 	unsigned long	serial;		/* serial number of this unit */
 	unsigned long	last_time;	/* last time config saved */
 	unsigned char	tz[8];		/* asciiz name for this timezone */
-	unsigned long	offset;		/* offset from UTC for this timezone */
+	long	offset;			/* offset from UTC for this timezone */
 	unsigned char	cal;		/* clock crystal calibration value */
 };
 

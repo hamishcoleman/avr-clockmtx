@@ -56,6 +56,8 @@ unsigned char param1[PARAM_SIZE];
 unsigned char param2[PARAM_SIZE];
 unsigned char count;
 
+char *message = "wall of correct clocks - Aconex Hackathon 201207";
+
 void serial_docmd(unsigned char ch) {
 	char buf[11];
 	char *p = buf;
@@ -66,6 +68,7 @@ void serial_docmd(unsigned char ch) {
 			break;
 		case 'i':	/* ID */
 			serial_putc('I');
+			serial_write(message,strlen(message));
 			/* TODO - output more */
 			break;
 		case 'C':	/* Set calibration */
@@ -81,7 +84,7 @@ void serial_docmd(unsigned char ch) {
 			time = atol(param1);
 		case 't':	/* Get Time */
 			serial_putc('T');
-			ltoa(time,p,10);
+			ultoa(time,p,10);
 			serial_write(p,strlen(p));
 			break;
 		case 'Z':	/* Set TZ name */
@@ -115,6 +118,7 @@ ISR(USART_RXC_vect) {
 	unsigned char ch = UDR;
 	unsigned char *p;
 
+/* if (bit_is_clear(UCSRA, FE)) */
 	switch(state) {
 		case NONE:
 			if (ch == 1) { state = INTR; }

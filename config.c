@@ -44,6 +44,6 @@ int config_save_if_dirty(void) {
 
 	config.last_time = time;
 	eeprom_busy_wait();
-	eeprom_write_block(&config,&config_saved,sizeof(config));
+	eeprom_update_block(&config,&config_saved,sizeof(config));
 	return 0;
 }
