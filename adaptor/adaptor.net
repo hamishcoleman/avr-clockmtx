@@ -1,98 +1,176 @@
-# EESchema Netlist Version 1.1 created  Mon 11 Feb 2013 12:08:37 EST
+# EESchema Netlist Version 1.1 created  Mon 11 Feb 2013 12:27:31 EST
 (
- ( /50F125AC RJ45_8 J1 RJ45
-  ( 1 N-000005 )
-  ( 2 GND )
-  ( 3 N-000015 )
-  ( 4 VCC )
-  ( 5 GND )
-  ( 6 GND )
-  ( 7 ? )
-  ( 8 ? )
-  ( 9 GND )
+ ( /511843A1 $noname  K2 GPIO {Lib=CONN_3}
+  (    1 /CE )
+  (    2 /CSN )
+  (    3 /IR )
  )
- ( /50F12C51 RJ45_8 J2 RJ45
-  ( 1 N-000005 )
-  ( 2 GND )
-  ( 3 N-000003 )
-  ( 4 VCC )
-  ( 5 GND )
-  ( 6 GND )
-  ( 7 ? )
-  ( 8 ? )
-  ( 9 GND )
+ ( /50F13310 $noname  K1 DC_Jack {Lib=CONN_3}
+  (    1 VCC )
+  (    2 GND )
+  (    3 ? )
  )
- ( /50F12484 GS2 JP1 NoOut
-  ( 1 N-000005 )
-  ( 2 N-000015 )
+ ( /50F12C51 $noname  J2 RJ45 {Lib=RJ45}
+  (    1 /TXD_Return )
+  (    2 GND )
+  (    3 /RXD )
+  (    4 VCC )
+  (    5 GND )
+  (    6 GND )
+  (    7 ? )
+  (    8 ? )
+  (    9 GND )
  )
- ( /50F1248F GS2 JP2 NoIn
-  ( 1 N-000005 )
-  ( 2 N-000003 )
+ ( /50F125AC $noname  J1 RJ45 {Lib=RJ45}
+  (    1 /TXD_Return )
+  (    2 GND )
+  (    3 /TXD )
+  (    4 VCC )
+  (    5 GND )
+  (    6 GND )
+  (    7 ? )
+  (    8 ? )
+  (    9 GND )
  )
- ( /50F13310 JACK_ALIM K1 DC_Jack
-  ( 1 VCC )
-  ( 2 GND )
-  ( 3 ? )
+ ( /50F1248F $noname  JP2 NoIn {Lib=JUMPER}
+  (    1 /TXD_Return )
+  (    2 /RXD )
  )
- ( /511843A1 GS3 K2 GPIO
-  ( 1 N-000016 )
-  ( 2 N-000009 )
-  ( 3 N-000018 )
+ ( /50F12484 $noname  JP1 NoOut {Lib=JUMPER}
+  (    1 /TXD_Return )
+  (    2 /TXD )
  )
- ( /50F0F66E PIN_ARRAY_5x2 P2 nRF24l01
-  ( 1 VCC )
-  ( 2 VCC )
-  ( 3 N-000016 )
-  ( 4 N-000009 )
-  ( 5 N-000017 )
-  ( 6 N-000010 )
-  ( 7 N-000011 )
-  ( 8 N-000018 )
-  ( 9 GND )
-  ( 10 GND )
+ ( /50F0F753 $noname  P9 Serial {Lib=CONN_4}
+  (    1 GND )
+  (    2 /RXD )
+  (    3 /TXD )
+  (    4 VCC )
  )
- ( /50F0F669 PIN_ARRAY_5x2 P3 ISP
-  ( 1 N-000010 )
-  ( 2 VCC )
-  ( 3 ? )
-  ( 4 GND )
-  ( 5 N-000014 )
-  ( 6 GND )
-  ( 7 N-000017 )
-  ( 8 GND )
-  ( 9 N-000011 )
-  ( 10 GND )
+ ( /50F0F73C $noname  P7 Out {Lib=CONN_4}
+  (    1 GND )
+  (    2 /TXD )
+  (    3 VCC )
+  (    4 /TXD_Return )
  )
- ( /50F0F64C PIN_ARRAY_5x2 P6 Clock
-  ( 1 N-000010 )
-  ( 2 VCC )
-  ( 3 ? )
-  ( 4 GND )
-  ( 5 N-000014 )
-  ( 6 N-000015 )
-  ( 7 N-000017 )
-  ( 8 N-000003 )
-  ( 9 N-000011 )
-  ( 10 GND )
+ ( /50F0F738 $noname  P8 In {Lib=CONN_4}
+  (    1 GND )
+  (    2 /RXD )
+  (    3 VCC )
+  (    4 /TXD_Return )
  )
- ( /50F0F73C PIN_ARRAY_4x1 P7 Out
-  ( 1 GND )
-  ( 2 N-000015 )
-  ( 3 VCC )
-  ( 4 N-000005 )
+ ( /50F0F66E $noname  P2 nRF24l01 {Lib=CONN_5X2}
+  (    1 VCC )
+  (    2 VCC )
+  (    3 /CE )
+  (    4 /CSN )
+  (    5 /SCK )
+  (    6 /MOSI )
+  (    7 /MISO )
+  (    8 /IR )
+  (    9 GND )
+  (   10 GND )
  )
- ( /50F0F738 PIN_ARRAY_4x1 P8 In
-  ( 1 GND )
-  ( 2 N-000003 )
-  ( 3 VCC )
-  ( 4 N-000005 )
+ ( /50F0F669 $noname  P3 ISP {Lib=CONN_5X2}
+  (    1 /MOSI )
+  (    2 VCC )
+  (    3 ? )
+  (    4 GND )
+  (    5 /RST )
+  (    6 GND )
+  (    7 /SCK )
+  (    8 GND )
+  (    9 /MISO )
+  (   10 GND )
  )
- ( /50F0F753 PIN_ARRAY_4x1 P9 Serial
-  ( 1 GND )
-  ( 2 N-000003 )
-  ( 3 N-000015 )
-  ( 4 VCC )
+ ( /50F0F64C $noname  P6 Clock {Lib=CONN_5X2}
+  (    1 /MOSI )
+  (    2 VCC )
+  (    3 ? )
+  (    4 GND )
+  (    5 /RST )
+  (    6 /TXD )
+  (    7 /SCK )
+  (    8 /RXD )
+  (    9 /MISO )
+  (   10 GND )
  )
 )
 *
+{ Pin List by Nets
+Net 1 "GND" "GND"
+ P3 4
+ P2 10
+ P2 9
+ J2 9
+ J2 6
+ J2 2
+ K1 2
+ P6 10
+ J2 5
+ P9 1
+ P7 1
+ P6 4
+ P8 1
+ P3 10
+ P3 8
+ P3 6
+ J1 9
+ J1 6
+ J1 5
+ J1 2
+Net 4 "/RXD" "RXD"
+ P9 2
+ P8 2
+ JP2 2
+ J2 3
+ P6 8
+Net 5 "/TXD_Return" "TXD_Return"
+ J2 1
+ P7 4
+ J1 1
+ JP2 1
+ JP1 1
+ P8 4
+Net 6 "VCC" "VCC"
+ J2 4
+ P2 1
+ J1 4
+ K1 1
+ P6 2
+ P3 2
+ P8 3
+ P7 3
+ P9 4
+ P2 2
+Net 10 "/CSN" "CSN"
+ K2 2
+ P2 4
+Net 11 "/MISO" "MISO"
+ P6 9
+ P2 7
+ P3 9
+Net 14 "/SCK" "SCK"
+ P2 5
+ P3 7
+ P6 7
+Net 15 "/RST" "RST"
+ P6 5
+ P3 5
+Net 16 "/MOSI" "MOSI"
+ P3 1
+ P6 1
+ P2 6
+Net 17 "/IR" "IR"
+ K2 3
+ P2 8
+Net 18 "/TXD" "TXD"
+ J1 3
+ P6 6
+ P9 3
+ P7 2
+ JP1 2
+Net 19 "/CE" "CE"
+ K2 1
+ P2 3
+}
+#End
