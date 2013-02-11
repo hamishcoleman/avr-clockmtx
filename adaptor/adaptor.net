@@ -1,176 +1,98 @@
-# EESchema Netlist Version 1.1 created  Mon 11 Feb 2013 12:08:03 EST
+# EESchema Netlist Version 1.1 created  Mon 11 Feb 2013 12:08:37 EST
 (
- ( /511843A1 $noname  K2 GPIO {Lib=CONN_3}
-  (    1 N-000016 )
-  (    2 N-000009 )
-  (    3 N-000018 )
+ ( /50F125AC RJ45_8 J1 RJ45
+  ( 1 N-000005 )
+  ( 2 GND )
+  ( 3 N-000015 )
+  ( 4 VCC )
+  ( 5 GND )
+  ( 6 GND )
+  ( 7 ? )
+  ( 8 ? )
+  ( 9 GND )
  )
- ( /50F13310 $noname  K1 DC_Jack {Lib=CONN_3}
-  (    1 VCC )
-  (    2 GND )
-  (    3 ? )
+ ( /50F12C51 RJ45_8 J2 RJ45
+  ( 1 N-000005 )
+  ( 2 GND )
+  ( 3 N-000003 )
+  ( 4 VCC )
+  ( 5 GND )
+  ( 6 GND )
+  ( 7 ? )
+  ( 8 ? )
+  ( 9 GND )
  )
- ( /50F12C51 $noname  J2 RJ45 {Lib=RJ45}
-  (    1 N-000005 )
-  (    2 GND )
-  (    3 N-000003 )
-  (    4 VCC )
-  (    5 GND )
-  (    6 GND )
-  (    7 ? )
-  (    8 ? )
-  (    9 GND )
+ ( /50F12484 GS2 JP1 NoOut
+  ( 1 N-000005 )
+  ( 2 N-000015 )
  )
- ( /50F125AC $noname  J1 RJ45 {Lib=RJ45}
-  (    1 N-000005 )
-  (    2 GND )
-  (    3 N-000015 )
-  (    4 VCC )
-  (    5 GND )
-  (    6 GND )
-  (    7 ? )
-  (    8 ? )
-  (    9 GND )
+ ( /50F1248F GS2 JP2 NoIn
+  ( 1 N-000005 )
+  ( 2 N-000003 )
  )
- ( /50F1248F $noname  JP2 NoIn {Lib=JUMPER}
-  (    1 N-000005 )
-  (    2 N-000003 )
+ ( /50F13310 JACK_ALIM K1 DC_Jack
+  ( 1 VCC )
+  ( 2 GND )
+  ( 3 ? )
  )
- ( /50F12484 $noname  JP1 NoOut {Lib=JUMPER}
-  (    1 N-000005 )
-  (    2 N-000015 )
+ ( /511843A1 GS3 K2 GPIO
+  ( 1 N-000016 )
+  ( 2 N-000009 )
+  ( 3 N-000018 )
  )
- ( /50F0F753 $noname  P9 Serial {Lib=CONN_4}
-  (    1 GND )
-  (    2 N-000003 )
-  (    3 N-000015 )
-  (    4 VCC )
+ ( /50F0F66E PIN_ARRAY_5x2 P2 nRF24l01
+  ( 1 VCC )
+  ( 2 VCC )
+  ( 3 N-000016 )
+  ( 4 N-000009 )
+  ( 5 N-000017 )
+  ( 6 N-000010 )
+  ( 7 N-000011 )
+  ( 8 N-000018 )
+  ( 9 GND )
+  ( 10 GND )
  )
- ( /50F0F73C $noname  P7 Out {Lib=CONN_4}
-  (    1 GND )
-  (    2 N-000015 )
-  (    3 VCC )
-  (    4 N-000005 )
+ ( /50F0F669 PIN_ARRAY_5x2 P3 ISP
+  ( 1 N-000010 )
+  ( 2 VCC )
+  ( 3 ? )
+  ( 4 GND )
+  ( 5 N-000014 )
+  ( 6 GND )
+  ( 7 N-000017 )
+  ( 8 GND )
+  ( 9 N-000011 )
+  ( 10 GND )
  )
- ( /50F0F738 $noname  P8 In {Lib=CONN_4}
-  (    1 GND )
-  (    2 N-000003 )
-  (    3 VCC )
-  (    4 N-000005 )
+ ( /50F0F64C PIN_ARRAY_5x2 P6 Clock
+  ( 1 N-000010 )
+  ( 2 VCC )
+  ( 3 ? )
+  ( 4 GND )
+  ( 5 N-000014 )
+  ( 6 N-000015 )
+  ( 7 N-000017 )
+  ( 8 N-000003 )
+  ( 9 N-000011 )
+  ( 10 GND )
  )
- ( /50F0F66E $noname  P2 nRF24l01 {Lib=CONN_5X2}
-  (    1 VCC )
-  (    2 VCC )
-  (    3 N-000016 )
-  (    4 N-000009 )
-  (    5 N-000017 )
-  (    6 N-000010 )
-  (    7 N-000011 )
-  (    8 N-000018 )
-  (    9 GND )
-  (   10 GND )
+ ( /50F0F73C PIN_ARRAY_4x1 P7 Out
+  ( 1 GND )
+  ( 2 N-000015 )
+  ( 3 VCC )
+  ( 4 N-000005 )
  )
- ( /50F0F669 $noname  P3 ISP {Lib=CONN_5X2}
-  (    1 N-000010 )
-  (    2 VCC )
-  (    3 ? )
-  (    4 GND )
-  (    5 N-000014 )
-  (    6 GND )
-  (    7 N-000017 )
-  (    8 GND )
-  (    9 N-000011 )
-  (   10 GND )
+ ( /50F0F738 PIN_ARRAY_4x1 P8 In
+  ( 1 GND )
+  ( 2 N-000003 )
+  ( 3 VCC )
+  ( 4 N-000005 )
  )
- ( /50F0F64C $noname  P6 Clock {Lib=CONN_5X2}
-  (    1 N-000010 )
-  (    2 VCC )
-  (    3 ? )
-  (    4 GND )
-  (    5 N-000014 )
-  (    6 N-000015 )
-  (    7 N-000017 )
-  (    8 N-000003 )
-  (    9 N-000011 )
-  (   10 GND )
+ ( /50F0F753 PIN_ARRAY_4x1 P9 Serial
+  ( 1 GND )
+  ( 2 N-000003 )
+  ( 3 N-000015 )
+  ( 4 VCC )
  )
 )
 *
-{ Pin List by Nets
-Net 3 "" ""
- P9 2
- P8 2
- JP2 2
- J2 3
- P6 8
-Net 4 "VCC" "VCC"
- J2 4
- P2 2
- P8 3
- P7 3
- P9 4
- P3 2
- P2 1
- P6 2
- K1 1
- J1 4
-Net 5 "" ""
- P7 4
- P8 4
- J1 1
- JP1 1
- JP2 1
- J2 1
-Net 6 "GND" "GND"
- J2 5
- K1 2
- J2 2
- J2 6
- J2 9
- J1 9
- P3 8
- P3 4
- J1 6
- P6 10
- P3 10
- J1 5
- P6 4
- J1 2
- P3 6
- P8 1
- P2 9
- P2 10
- P7 1
- P9 1
-Net 9 "" ""
- P2 4
- K2 2
-Net 10 "" ""
- P2 6
- P3 1
- P6 1
-Net 11 "" ""
- P2 7
- P3 9
- P6 9
-Net 14 "" ""
- P6 5
- P3 5
-Net 15 "" ""
- P7 2
- JP1 2
- P9 3
- P6 6
- J1 3
-Net 16 "" ""
- K2 1
- P2 3
-Net 17 "" ""
- P6 7
- P3 7
- P2 5
-Net 18 "" ""
- P2 8
- K2 3
-}
-#End
