@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 12 Jan 2013 20:59:49 EST
+EESchema Schematic File Version 2  date Mon 11 Feb 2013 11:55:31 EST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -29,13 +29,14 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-EELAYER 43  0
+LIBS:adaptor-cache
+EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 1
 Title ""
-Date "12 jan 2013"
+Date "11 feb 2013"
 Rev ""
 Comp ""
 Comment1 ""
@@ -108,16 +109,30 @@ Wire Wire Line
 	5200 2250 5200 2150
 Connection ~ 5300 3500
 Wire Wire Line
-	5300 2150 5300 4950
+	5300 2150 5300 2700
+Wire Wire Line
+	5300 2700 5300 3500
+Wire Wire Line
+	5300 3500 5300 4400
+Wire Wire Line
+	5300 4400 5300 4600
+Wire Wire Line
+	5300 4600 5300 4950
 Connection ~ 5100 3700
 Wire Wire Line
-	5100 4950 5100 3700
+	5100 4950 5100 4500
+Wire Wire Line
+	5100 4500 5100 3800
+Wire Wire Line
+	5100 3800 5100 3700
 Wire Wire Line
 	5950 3500 5850 3500
 Wire Wire Line
 	5850 3500 5850 3450
 Wire Wire Line
-	5950 3600 4450 3600
+	5950 3600 5100 3600
+Wire Wire Line
+	5100 3600 4450 3600
 Wire Wire Line
 	4850 2300 4850 2250
 Wire Wire Line
@@ -128,13 +143,17 @@ Connection ~ 2300 3700
 Wire Wire Line
 	2400 3600 2300 3600
 Wire Wire Line
-	3650 3800 3200 3800
+	3650 3800 3300 3800
+Wire Wire Line
+	3300 3800 3200 3800
 Wire Wire Line
 	3650 3600 3200 3600
 Wire Wire Line
 	2300 3800 2400 3800
 Wire Wire Line
-	4600 3850 4600 3500
+	4600 3850 4600 3800
+Wire Wire Line
+	4600 3800 4600 3500
 Wire Wire Line
 	4600 3500 4450 3500
 Wire Wire Line
@@ -145,16 +164,26 @@ Connection ~ 4600 3800
 Wire Wire Line
 	2300 3400 2400 3400
 Wire Wire Line
-	3650 3400 3200 3400
+	3650 3400 3500 3400
 Wire Wire Line
-	3650 3700 3200 3700
+	3500 3400 3200 3400
+Wire Wire Line
+	3650 3700 3400 3700
+Wire Wire Line
+	3400 3700 3200 3700
 Wire Wire Line
 	2300 3700 2400 3700
 Connection ~ 2300 3800
 Wire Wire Line
 	2400 3500 2300 3500
 Wire Wire Line
-	2300 3500 2300 3850
+	2300 3500 2300 3600
+Wire Wire Line
+	2300 3600 2300 3700
+Wire Wire Line
+	2300 3700 2300 3800
+Wire Wire Line
+	2300 3800 2300 3850
 Connection ~ 2300 3600
 Wire Wire Line
 	5000 4950 5000 4850
@@ -163,13 +192,19 @@ Wire Wire Line
 Wire Wire Line
 	4850 4850 4850 4900
 Wire Wire Line
-	5950 3700 4450 3700
+	5950 3700 5100 3700
+Wire Wire Line
+	5100 3700 4450 3700
 Wire Wire Line
 	5850 3850 5850 3800
 Wire Wire Line
 	5850 3800 5950 3800
 Wire Wire Line
-	5100 3600 5100 2150
+	5100 3600 5100 2900
+Wire Wire Line
+	5100 2900 5100 2800
+Wire Wire Line
+	5100 2800 5100 2150
 Connection ~ 5100 3600
 Connection ~ 5100 2900
 Wire Wire Line
@@ -626,7 +661,7 @@ P 6300 3650
 F 0 "P9" V 6250 3650 50  0000 C CNN
 F 1 "Serial" V 6350 3650 50  0000 C CNN
 	1    6300 3650
-	1    0    0    -1  
+	1    0    0    1   
 $EndComp
 $Comp
 L CONN_4 P7
