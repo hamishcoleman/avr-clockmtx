@@ -1,0 +1,87 @@
+Cmp-Mod V01 Created by CvPcb (2012-apr-16-27)-stable date = Mon 11 Feb 2013 12:08:37 EST
+
+BeginCmp
+TimeStamp = /50F125AC;
+Reference = J1;
+ValeurCmp = RJ45;
+IdModule  = RJ45_8;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F12C51;
+Reference = J2;
+ValeurCmp = RJ45;
+IdModule  = RJ45_8;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F12484;
+Reference = JP1;
+ValeurCmp = NoOut;
+IdModule  = GS2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F1248F;
+Reference = JP2;
+ValeurCmp = NoIn;
+IdModule  = GS2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F13310;
+Reference = K1;
+ValeurCmp = DC_Jack;
+IdModule  = JACK_ALIM;
+EndCmp
+
+BeginCmp
+TimeStamp = /511843A1;
+Reference = K2;
+ValeurCmp = GPIO;
+IdModule  = GS3;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F0F66E;
+Reference = P2;
+ValeurCmp = nRF24l01;
+IdModule  = PIN_ARRAY_5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F0F669;
+Reference = P3;
+ValeurCmp = ISP;
+IdModule  = PIN_ARRAY_5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F0F64C;
+Reference = P6;
+ValeurCmp = Clock;
+IdModule  = PIN_ARRAY_5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F0F73C;
+Reference = P7;
+ValeurCmp = Out;
+IdModule  = PIN_ARRAY_4x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F0F738;
+Reference = P8;
+ValeurCmp = In;
+IdModule  = PIN_ARRAY_4x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /50F0F753;
+Reference = P9;
+ValeurCmp = Serial;
+IdModule  = PIN_ARRAY_4x1;
+EndCmp
+
+EndListe
