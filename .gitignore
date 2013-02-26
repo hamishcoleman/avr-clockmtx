@@ -1,3 +1,5 @@
 *.o
 clockmtx.elf
 clockmtx.hex
+clockmtx.bin
+
