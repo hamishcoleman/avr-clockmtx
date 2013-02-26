@@ -43,13 +43,13 @@ Change clock to 2Mhz
 	lfuse E2
 
 P=/dev/ttyUSB0
-stty 9600 <$P
+stty 19200 <$P
 
-echo -e "\01t\r"	   >$P # get time
-echo -e "\01o\r"	   >$P # get tz and offset
+echo -e "\x02t\0x04"	      >$P # get time
+echo -e "\x02o\0x04"	      >$P # get tz and offset
 
-echo -e "\01T`date +%s`\r" >$P # set time
-echo -e "\01ZAEST\r"	   >$P # set tz name
-echo -e "\01OEST,36000\r"  >$P # set offset
+echo -e "\x02T`date +%s`\x04" >$P # set time
+echo -e "\x02ZAEST\x04"	      >$P # set tz name
+echo -e "\x02OEST,36000\x04"  >$P # set offset
 
 

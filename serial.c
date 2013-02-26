@@ -28,6 +28,7 @@ void serial_init(unsigned int ubrr) {
 }
 
 void serial_putc(unsigned char data) {
+    /* TODO - need an interface that knows when to DLE */
         /* Wait for empty transmit buffer */
         loop_until_bit_is_set(UCSRA,UDRE);
 
@@ -42,26 +43,13 @@ void serial_write(unsigned char *buf, int count) {
         }
 }
 
-enum serial_state {
-	NONE =0,
-	INTR,
-	PARAM1,
-	PARAM2,
-	DONE,
-};
-enum serial_state state;
-unsigned char cmd;
-#define PARAM_SIZE	11
-unsigned char param1[PARAM_SIZE];
-unsigned char param2[PARAM_SIZE];
-unsigned char count;
-
 char *message = "wall of correct clocks - Aconex Hackathon 201207";
 
-void serial_docmd(unsigned char ch) {
+void serial_docmd(unsigned char *input) {
 	char buf[11];
 	char *p = buf;
 	serial_putc('=');
+        unsigned char cmd = input[0];
 	switch(cmd) {
 		case 'p':	/* PING */
 			serial_putc('P');
@@ -72,7 +60,7 @@ void serial_docmd(unsigned char ch) {
 			/* TODO - output more */
 			break;
 		case 'C':	/* Set calibration */
-			config.cal = atoi(param1);
+			config.cal = atoi(&input[1]);
 			config_dirty();
 		case 'c':	/* Get calibration */
 			serial_putc('C');
@@ -81,27 +69,30 @@ void serial_docmd(unsigned char ch) {
 			break;
 		case 'T':	/* Set Time */
 			/* NOTE: 32bit value, set from interrupt context */
-			time = atol(param1);
+			time = atol(&input[1]);
 		case 't':	/* Get Time */
 			serial_putc('T');
 			ultoa(time,p,10);
 			serial_write(p,strlen(p));
 			break;
 		case 'Z':	/* Set TZ name */
-			strncpy(config.tz,param1,sizeof(config.tz));
+			strncpy(config.tz,&input[1],sizeof(config.tz));
 			config_dirty();
 		case 'z':	/* Get TZ name */
 			serial_putc('Z');
 			serial_write(config.tz,strlen(config.tz));
 			break;
 		case 'O':	/* Set Offset */
-			if (!strcmp(config.tz,param1)) {
-				config.offset = atol(param2);
+                        {
+                        unsigned char * p1 = strtok(&input[1],",");
+			if (!strcmp(config.tz,p1)) {
+				config.offset = atol(strtok(NULL,","));
 				config_dirty();
 			} else {
 				/* Ignore commands not for us */
 				break;
 			}
+                        }
 		case 'o':	/* Get Offset */
 			serial_putc('O');
 			serial_write(config.tz,strlen(config.tz));
@@ -114,47 +105,78 @@ void serial_docmd(unsigned char ch) {
 	serial_putc('\n');
 }
 
+void serial_rx_packet(unsigned char *buf,unsigned char size) {
+    /* HACK */
+    if (size < 32) {
+        buf[size]=0;
+        serial_docmd(buf);
+    }
+}
+
+unsigned char serial_flags = SERIAL_ECHO || SERIAL_DLE;
+/* Start with echo on */
+/* ensure sync by throwing the first char */
+
+unsigned char serial_packetp;     /* pointer into the packet buffer */
+
+#define PACKET_BUF      32
+unsigned char serial_packet[PACKET_BUF];
+
 ISR(USART_RXC_vect) {
-	unsigned char ch = UDR;
-	unsigned char *p;
+    unsigned char ch;
 
-/* if (bit_is_clear(UCSRA, FE)) */
-	switch(state) {
-		case NONE:
-			if (ch == 1) { state = INTR; }
-			return;
-		case INTR:
-			serial_putc(ch);
-			cmd = ch;
-			param1[0]=0;
-			param2[0]=0;
-			count = 0;
-			state = PARAM1;
-			return;
-		case PARAM1:
-			p = param1;
-			break;
-		case PARAM2:
-			p = param2;
-			break;
-	}
+    if (bit_is_set(UCSRA,FE)) {
+        /* This is a rx frame error - read it and throw it away */
+        ch = UDR;
+        serial_putc(SERIAL_NAK);  /* send warning */
+        serial_flags &= ~SERIAL_INPACKET;  /* stop buffering */
+        return;
+    }
 
-	if (ch == '\r') {
-		p[count]=0;
-		state=DONE;
-	} else if (ch == ',') {
-		serial_putc(ch);
-		p[count]=0;
-		count = 0;
-		state = PARAM2;
-	} else if (count<=PARAM_SIZE) {
-		serial_putc(ch);
-		p[count++]=ch;
-	}
+    ch = UDR;
 
-	if (state == DONE) {
-		serial_docmd(ch);
-		state = NONE;
-	}
+    if (serial_flags & SERIAL_ECHO) {
+        /* TODO - _putc needs some kind of mutex */
+        serial_putc(ch);
+    }
+
+    if (!(serial_flags & SERIAL_INDLE)) {
+        /* If we are allowed to interpret ctrl chars */
+        switch(ch) {
+            case SERIAL_DLE:
+                serial_flags |= SERIAL_INDLE;
+                return; /* dont copy DLE into packet buffer */
+            case SERIAL_STX:
+                serial_packetp=0;
+                serial_flags |= SERIAL_INPACKET;
+                return; /* dont copy STX into packet buffer */
+#if 0
+            case SERIAL_ETX:
+                /* TODO - add packet checksum code */
+#endif
+            case SERIAL_EOT:
+                if (serial_flags & SERIAL_INPACKET) {
+                    serial_flags &= ~SERIAL_INPACKET;
+                    serial_rx_packet(serial_packet,serial_packetp);
+                }
+                return;
+        }
+    } else {
+        serial_flags &= ~SERIAL_INDLE;
+    }
+
+    if (serial_flags & SERIAL_INPACKET) {
+        if (serial_packetp<sizeof(serial_packet)) {
+            /* There is room left in the buffer */
+            serial_packet[serial_packetp++]=ch;
+        } else {
+            /* No room left */
+            serial_putc(SERIAL_NAK);  /* send warning */
+            serial_flags &= ~SERIAL_INPACKET;  /* stop buffering */
+        }
+    } else {
+        /* Do nothing, but this is where we could hook to a non
+           packetised interface */
+    }
 }
 
