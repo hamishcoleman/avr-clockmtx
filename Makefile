@@ -12,7 +12,7 @@ MCU_AVRDUDE:=m8
 all:	$(TARGET) size
 
 CC:=avr-gcc
-CFLAGS:=-g -Os -std=c99 -mmcu=$(MCU)
+CFLAGS:=-g -Os -std=c99 -mmcu=$(MCU)	# -mcall-prologues
 OBJCOPY:=avr-objcopy
 
 TARGET_ELF:=$(basename $(TARGET)).elf
@@ -31,6 +31,9 @@ fuse:
 size:	$(OBJECT) $(TARGET_ELF)
 	avr-size $^
 
+emu:	$(basename $(TARGET)).bin
+	simulavr --device $(MCU) -W 0x0C,- -R 0x0C,- $^
+
 clean:
 	rm -f $(TARGET) $(TARGET_ELF) $(OBJECT)
 
@@ -41,3 +44,7 @@ $(TARGET_ELF): $(OBJECT)
 
 %.hex: %.elf
 	$(OBJCOPY) --remove-section .eeprom -O ihex $^ $@
+
+%.bin: %.elf
+	$(OBJCOPY) --remove-section .eeprom -O binary $^ $@
+
