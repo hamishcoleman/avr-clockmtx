@@ -17,6 +17,9 @@ OBJCOPY:=avr-objcopy
 
 TARGET_ELF:=$(basename $(TARGET)).elf
 
+build-dep:
+	apt-get install avrdude gcc-avr avr-libc
+
 burn:	$(TARGET)
 	avrdude -c $(ISP) -p $(MCU_AVRDUDE) -U flash:w:$<:i
 
