@@ -15,6 +15,8 @@ CC:=avr-gcc
 CFLAGS:=-g -Os -std=c99 -mmcu=$(MCU)	# -mcall-prologues
 OBJCOPY:=avr-objcopy
 
+LDFLAGS:=-Wl,-section-start=.eeprom=0x810001
+
 TARGET_ELF:=$(basename $(TARGET)).elf
 
 build-dep:
@@ -40,7 +42,7 @@ clean:
 $(TARGET_ELF): $(OBJECT)
 
 %.elf: %.o
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $^
 
 %.hex: %.elf
 	$(OBJCOPY) --remove-section .eeprom -O ihex $^ $@
