@@ -6,7 +6,8 @@ MCU:=atmega8
 LFUSE:=0xe2
 HFUSE:=0xc9
 
-ISP:=USBasp
+ISP ?= USBasp
+ISP_PORT ?= usb
 MCU_AVRDUDE:=m8
 
 all:	$(TARGET) size
@@ -23,10 +24,13 @@ build-dep:
 	apt-get install avrdude gcc-avr avr-libc
 
 burn:	$(TARGET)
-	avrdude -c $(ISP) -p $(MCU_AVRDUDE) -U flash:w:$<:i
+	avrdude -c $(ISP) -P $(ISP_PORT) -p $(MCU_AVRDUDE) -y -U flash:w:$<:i
+
+osccal:
+	avrdude -c $(ISP) -P $(ISP_PORT) -p $(MCU_AVRDUDE) -O
 
 fuse:
-	avrdude -c $(ISP) -p $(MCU_AVRDUDE) \
+	avrdude -c $(ISP) -P $(ISP_PORT) -p $(MCU_AVRDUDE) \
 		-U lfuse:w:$(LFUSE):m \
 		-U hfuse:w:$(HFUSE):m
 
