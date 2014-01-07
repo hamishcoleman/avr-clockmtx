@@ -45,11 +45,11 @@ Change clock to 2Mhz
 P=/dev/ttyUSB0
 stty 19200 <$P
 
-echo -e "\x02t\0x04"	      >$P # get time
-echo -e "\x02o\0x04"	      >$P # get tz and offset
+echo -e "\x02t\x04"	      >$P # get time
+echo -e "\x02o\x04"	      >$P # get tz and offset
 
 echo -e "\x02T`date +%s`\x04" >$P # set time
 echo -e "\x02ZAEST\x04"	      >$P # set tz name
-echo -e "\x02OEST,36000\x04"  >$P # set offset
+echo -e "\x02OAEST,36000\x04"  >$P # set offset
 
 
