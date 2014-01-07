@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+#
+PORT="$1"
+if [ -z "$PORT" ]; then
+    echo need port
+    exit 1
+fi
+shift
+
+# FIXME - the official short name is "EST", but that has dupes
+# otherwise, we could detect these two names..
+#
+ZONE_OLSEN="$1"
+ZONE_SHORT="$2"
+if [ -z "$ZONE_OLSEN" ]; then
+    ZONE_OLSEN="Australia/Melbourne"
+    ZONE_SHORT="AEST"
+fi
+
+stty 9600 <$PORT
+
+jpnevulator --read --ascii --byte-count --timing-print --tty=$PORT &
+READ=$!
+
+echo -e "`date +%s` \x02t\x04 " >>$PORT # get old time
+sleep 0.1
+echo -e "\x02T`date +%s`\x04"   >>$PORT # set time
+sleep 0.1
+
+OFFSET=`perl -e "use DateTime; print DateTime->now(time_zone=>'$ZONE_OLSEN')->offset();"`
+echo -e "\x02O${ZONE_SHORT},$OFFSET\x04"   >>$PORT # set offset
+
+sleep 0.1
+echo
+
+kill $READ
