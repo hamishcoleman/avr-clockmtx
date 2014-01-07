@@ -19,19 +19,12 @@
 #include "clock.h"
 #include "ht1632c.h"
 #include "config.h"
+#include "font.h"
 
 #define byte uint8_t
 #define word uint16_t
 
 
-
-PROGMEM const byte bigdigits[10][6] = {
-  {126,129,129,129,129,126},  {128,132,130,255,128,128},            // 0,1
-  {130,193,161,145,137,134},  { 66,129,137,137,137,118},            // 2,3
-  {0x3f,0x20,0x20,0xfc,0x20,0x20}, {0x4f,0x89,0x89,0x89,0x89,0x71}, // 4,5
-  {0x7e,0x89,0x89,0x89,0x89,0x72}, {0x03,0x01,0xc1,0x31,0x0d,0x03}, // 6,7
-  {0x76,0x89,0x89,0x89,0x89,0x76}, {0x46,0x89,0x89,0x89,0x89,0x7e}, // 8,9
-};
 
 #define key1 ((PIND&_BV(7))==0)
 #define key2 ((PIND&_BV(6))==0)
@@ -69,8 +62,8 @@ int main(void) {  //============================================================
   config_load();
   clock_init();
 
-  //serial_init(12); // at 2Mhz, this gives 9k6bps
-  serial_init(5); // at 2Mhz, this gives 20.8Kbps, which works for me as 19.2K
+  serial_init(12); // at 2Mhz, this gives 9k6bps (at 1Mhz, 4k8)
+  //serial_init(5); // at 2Mhz, this gives 20.8Kbps, which works for me as 19.2K
   //serial_init(2); // at 2Mhz, this is 38.4Kbps
   //serial_init(1); // at 2Mhz, this is 57.6Kbps
   //serial_init(0); // at 2Mhz, this is 115.2Kbps
