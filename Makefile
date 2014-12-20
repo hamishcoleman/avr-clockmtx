@@ -40,6 +40,10 @@ size:	$(OBJECT) $(TARGET_ELF)
 emu:	$(basename $(TARGET)).bin
 	simulavr --device $(MCU) -W 0x0C,- -R 0x0C,- $^
 
+monitor:
+	jpnevulator --read --ascii --byte-count --timing-print --tty=/dev/ttyUSB0 --pty --pass
+
+
 clean:
 	rm -f $(TARGET) $(TARGET_ELF) $(OBJECT)
 
