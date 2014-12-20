@@ -1,7 +1,7 @@
 Serial comms:
 
 Layer 0:
-19.2K, 8 bits, No parity, 1 stop bit
+9k6K, 8 bits, No parity, 1 stop bit
 
 Layer 1:
 Device boots up with echo mode turned on (to assist with debugging
@@ -9,19 +9,31 @@ any serial connection or adaptor issues) - so any comms received will
 immediately be sent back without any editing or decoding
 
 Special chars are escaped using the DLE (0x10) char - this char will
-escape the next char.
+escape the next char. (Including itself, so to include 0x10 in the recieved
+packet the sequence 0x10,0x10 would be sent)
+TODO: consider something like ppp escaping - the escaped char is XOR 0x20
+TODO: perhaps add xon/xoff to the escaped chars
 
 Any received char with a framing error will cause a NAK (0x15) to be sent
-and that char to be ignored, along with aborting any packet rx in progres
+and that char to be ignored, along with aborting any packet rx in progres.
+(Any other detected errors should also cause the packet rx to abort,
+and may sent a NAK).  Consequently, the NAK char is special and must be
+escaped with DLE.  Any non-escaped NAK char received will be treated the
+same as a framing error - including sending a NAK, so care must be taken
+that not all devices to have echo turned on (this allows daisy-chained
+devices to pass on error-aborts)
+
+The special chars defined by layer 1 (DLE and NAK) are combined with the
+framing chars used by layer 2 to produce the list of chars that must be
+escaped.
 
 Layer 2:
-Communications is packetised.  Any data received outside of a packet
-is ignored by the packet system (but in the future may be consumed by
-a parallel CLI mode)
+Communications is packetised.
 
-A packet is begun with a STX (0x02) char.  Then data bytes are received
-into the device packet bugger until either ETX, EOT or a full buffer
-occurs.
+A packet is begun with a STX (0x02) char.  Any data received outside
+of a packet is ignored by the packet system (but in the future may be
+consumed by a parallel CLI mode) Then data bytes are received into the
+device packet buffer until either ETX, EOT or a full buffer occurs.
 
 If a full buffer occurs, a NAK is immediately sent and the remainder of
 the packet is ignored.
@@ -36,6 +48,15 @@ over the rest of the packet.  This checksum is calculated, compared
 and if there is a mismatch then a NAK is sent and the packet is ignored.
 If there is no mismatch then the checksum bytes are removed and the packet
 is passed on to the Packet system.
+
+List of chars required to be escaped with DLE:
+(other chars may be escaped)
+    0x02 STX
+    0x03 ETX
+    0x04 EOT
+    0x10 DLE
+    0x15 NAK
+
 
 
 Packet system:
@@ -66,4 +87,5 @@ Colon Blink control
 Unique serial number
 Scroll message
 next TZ offset is "x" at time "y"
+Off/Sleep/On
 
