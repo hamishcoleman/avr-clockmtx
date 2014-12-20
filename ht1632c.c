@@ -96,3 +96,38 @@ void HTbrightness(byte b) {
   HTcommand(HTsetbright + ((b&15)<<1) );
 }
 
+
+/*
+ * Holtek HT1632
+
+CS/     high disables and resets io circuit, low enables comms
+WR/     write clock input - data is clocked in from DATA on rising edge
+RD/     read clock input - data is clocked out from DATA on falling edge
+DATA
+
+After selecting chip, send operation, then successive commands can be sent
+with the same operation until the chip is deselected.
+
+Operation
+110     Read
+101     Write
+100     Command
+
+Commands
+100-0000-0000-X SYS-DIS         system OSC and LED duty cycle both off
+100-0000-0001-X SYS-EN          system OSC on
+100-0000-0010-X LED off
+100-0000-0011-X LED on
+100-0000-1000-X BLINK OFF
+100-0000-1001-X BLINK ON
+100-0001-00XX-X SLAVE MODE
+100-0001-01XX-X MASTER MODE
+100-0001-10XX-X RC              (Onboard RC timebase)
+100-0001-11XX-X EXT CLK
+100-0010-abXX-X COM options     a:0=N-MOS/1=P-MOS, b:0=8-COM/1=16-COM
+100-101X-dddd-X PWM Duty        dddd = 1 - 16 (out of 16)
+
+Write
+101-aaaaaaadddd
+
+ */
