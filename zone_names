@@ -1,0 +1,9 @@
+#
+# This file maps short zone names to full olsen database names
+# The clock only stores 8 characters, so we cannot just use the
+# olsen name.
+#
+#short   olsen database name
+London   Europe/London
+Melbourn Australia/Melbourne
+

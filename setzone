@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# Given the short zone name, lookup the olsen zone and set the attached
+# clock to use that zone details
+#
+PORT="$1"
+if [ -z "$PORT" ]; then
+    echo need port
+    exit 1
+fi
+shift
+
+# truncate the short name as the clock only stores 8 chars
+ZONE_SHORT=$(echo "$1" | cut -c1-8)
+
+if [ -z "$ZONE_SHORT" ]; then
+    echo need zone short name
+    exit 1
+fi
+
+ZONE_NAMES=$(dirname $0 )/zone_names
+if [ ! -e $ZONE_NAMES ]; then
+    echo zone mapping file $ZONE_NAMES does not exist
+    exit 1
+fi
+
+ZONE_OLSEN=$(egrep ^$ZONE_SHORT $ZONE_NAMES | head -1 | awk -- '{print $2}')
+if [ -z "$ZONE_OLSEN" ]; then
+    echo invalid short name - does zone_names need updating?
+    exit 1
+fi
+
+echo $ZONE_SHORT $ZONE_OLSEN
+
+stty 9600 <$PORT
+
+jpnevulator --read --ascii --byte-count --timing-print --tty=$PORT &
+READ=$!
+
+echo -e "\x02o\x04 " >>$PORT # get old zone
+sleep 0.1
+echo -e "\x02Z${ZONE_SHORT}\x04"   >>$PORT # set zone
+sleep 0.1
+
+OFFSET=`perl -e "use DateTime; print DateTime->now(time_zone=>'$ZONE_OLSEN')->offset();"`
+echo -e "\x02O${ZONE_SHORT},$OFFSET\x04"   >>$PORT # set offset
+sleep 0.1
+
+echo
+
+kill $READ
+
