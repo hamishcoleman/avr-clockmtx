@@ -26,4 +26,6 @@ void serial_putc(unsigned char);
 
 void serial_write(unsigned char*, int);
 
+void handle_rx_packet(unsigned char *,unsigned char);
+
 #endif
