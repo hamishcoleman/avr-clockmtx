@@ -20,12 +20,11 @@
 #include "ht1632c.h"
 #include "config.h"
 #include "font.h"
+#include "calibraterc.h"
 #include "version.h"
 
 #define byte uint8_t
 #define word uint16_t
-
-
 
 #define key1 ((PIND&_BV(7))==0)
 #define key2 ((PIND&_BV(6))==0)
@@ -55,6 +54,8 @@ byte changing, bright=3;
 byte brights[4]={0,2,6,15}; //brightness levels
 
 int main(void) {  //==================================================================== main ==================
+
+  calibraterc();
 
   HTpinsetup();
   HTsetup();

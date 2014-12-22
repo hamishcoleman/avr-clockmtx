@@ -1,6 +1,6 @@
 
 TARGET:=clockmtx.hex
-OBJECT:=clockmtx.o serial.o clock.o ht1632c.o config.o font.o \
+OBJECT:=clockmtx.o serial.o clock.o ht1632c.o config.o font.o calibraterc.o \
 	version.o
 
 MCU:=atmega8
