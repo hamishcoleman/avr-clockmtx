@@ -1,8 +1,9 @@
 
 TARGET:=clockmtx.hex
-OBJECT:=clockmtx.o serial.o clock.o ht1632c.o config.o font.o calibraterc.o \
-	version.o \
-	commands.o
+OBJECT+=serial.o clock.o calibraterc.o
+OBJECT+=ht1632c.o font.o screen.o
+OBJECT+=version.o
+OBJECT+=clockmtx.o commands.o config.o
 
 MCU:=atmega8
 LFUSE:=0xe2

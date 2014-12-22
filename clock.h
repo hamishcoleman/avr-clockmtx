@@ -11,10 +11,4 @@ extern volatile unsigned long time;
 
 void clock_init(void);
 
-extern char sec, minute, hour;
-
-void incsec(char);
-void decsec(char);
-char clockhandler(void);
-
 #endif

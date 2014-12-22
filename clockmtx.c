@@ -9,44 +9,26 @@
 
 
 
-#include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include <avr/eeprom.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "serial.h"
 #include "clock.h"
-#include "ht1632c.h"
 #include "config.h"
-#include "font.h"
 #include "calibraterc.h"
 #include "version.h"
+#include "screen.h"
 
 #define byte uint8_t
-#define word uint16_t
 
 #define key1 ((PIND&_BV(7))==0)
 #define key2 ((PIND&_BV(6))==0)
 #define key3 ((PIND&_BV(5))==0)
 #define keysetup() do{ DDRD&=0xff-_BV(7)-_BV(6)-_BV(5); PORTD|=_BV(7)+_BV(6)+_BV(5); }while(0)  //input, pull up
-
-//-------------------------------------------------------------------------------------- clock render ----------
-
-void renderclock(void) {
-  byte col=0;
-  for (byte i=0;i<6;i++) leds[col++]=pgm_read_byte(&bigdigits[hour/10][i]);
-  leds[col++]=0;
-  for (byte i=0;i<6;i++) leds[col++]=pgm_read_byte(&bigdigits[hour%10][i]);
-  leds[col++]=0;
-  if (sec%2) {leds[col++]=0x66;leds[col++]=0x66;} else {leds[col++]=0; leds[col++]=0;}
-  leds[col++]=0;
-  for (byte i=0;i<6;i++) leds[col++]=pgm_read_byte(&bigdigits[minute/10][i]);
-  leds[col++]=0;
-  for (byte i=0;i<6;i++) leds[col++]=pgm_read_byte(&bigdigits[minute%10][i]);
-  leds[col++]=0;
-  leds[col++]=0;
-}
 
 
 
@@ -57,8 +39,8 @@ int main(void) {  //============================================================
 
   calibraterc();
 
-  HTpinsetup();
-  HTsetup();
+  screen_init();
+
   keysetup();
 
   config_load();
@@ -73,8 +55,7 @@ int main(void) {  //============================================================
   serial_puts_P(version);
   serial_puts("Hello World\r\n");
 
-  for (byte i=0;i<32;i++) leds[i]=0b01010101<<(i%2);  HTsendscreen();
-
+    unsigned long time_last=200;
 
   while(1){ 
          if (key1) {if (changing>250) incsec(20); else {changing++; incsec(1);} }
@@ -82,11 +63,15 @@ int main(void) {  //============================================================
     else if (key3) {if (!changing) {changing=1; bright=(bright+1)%4; HTbrightness(brights[bright]);} } //only once per press
     else changing=0;
 
-    if (clockhandler()) {
-	renderclock();
-	HTsendscreen();
+    if (time!=time_last) {
+        /* Run the rendering only once a second */
+	time_last=time;
+
+	renderclock(time);
+
 	config_save_if_dirty();
     }
   }
   return(0);
 }//main
+
