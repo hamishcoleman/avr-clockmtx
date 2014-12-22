@@ -46,7 +46,7 @@ monitor:
 
 
 clean:
-	rm -f $(TARGET) $(TARGET_ELF) $(OBJECT)
+	rm -f $(TARGET) $(TARGET_ELF) $(OBJECT) version-auto.h
 
 version.o: version-auto.h
 version-auto.h: $(OBJECT:.o=.c)
