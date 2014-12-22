@@ -70,8 +70,8 @@ int main(void) {  //============================================================
   //serial_init(1); // at 2Mhz, this is 57.6Kbps
   //serial_init(0); // at 2Mhz, this is 115.2Kbps
 
-  serial_write_version();
-  serial_write("Hello World\r\n",13);
+  serial_puts_P(version);
+  serial_puts("Hello World\r\n");
 
   for (byte i=0;i<32;i++) leds[i]=0b01010101<<(i%2);  HTsendscreen();
 

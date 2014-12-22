@@ -34,7 +34,7 @@ void handle_rx_packet(unsigned char *input,unsigned char size) {
 			break;
 		case 'i':	/* ID */
 			serial_putc('I');
-			serial_write_version();
+			serial_puts_P(version);
 			/* TODO - output more */
 			break;
 		case 'C':	/* Set calibration */
@@ -43,7 +43,7 @@ void handle_rx_packet(unsigned char *input,unsigned char size) {
 		case 'c':	/* Get calibration */
 			serial_putc('C');
 			itoa(config.cal,p,10);
-			serial_write(p,strlen(p));
+			serial_puts(p);
 			break;
 		case 'T':	/* Set Time */
 			/* NOTE: 32bit value, set from interrupt context */
@@ -51,14 +51,14 @@ void handle_rx_packet(unsigned char *input,unsigned char size) {
 		case 't':	/* Get Time */
 			serial_putc('T');
 			ultoa(time,p,10);
-			serial_write(p,strlen(p));
+			serial_puts(p);
 			break;
 		case 'Z':	/* Set TZ name */
 			strncpy(config.tz,&input[1],sizeof(config.tz));
 			config_dirty();
 		case 'z':	/* Get TZ name */
 			serial_putc('Z');
-			serial_write(config.tz,strlen(config.tz));
+			serial_puts(config.tz);
 			break;
 		case 'O':	/* Set Offset */
                         {
@@ -73,10 +73,10 @@ void handle_rx_packet(unsigned char *input,unsigned char size) {
                         }
 		case 'o':	/* Get Offset */
 			serial_putc('O');
-			serial_write(config.tz,strlen(config.tz));
+			serial_puts(config.tz);
 			serial_putc(',');
 			ltoa(config.offset,p,10);
-			serial_write(p,strlen(p));
+			serial_puts(p);
 			break;
 	}
 	serial_putc('\r');

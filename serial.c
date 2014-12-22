@@ -10,6 +10,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include <string.h>
+
 #include "serial.h"
 
 void serial_init(unsigned int ubrr) {
@@ -36,6 +38,17 @@ void serial_write(unsigned char *buf, int count) {
                 serial_putc(*buf);
                 buf++;
         }
+}
+
+void serial_puts(unsigned char *buf) {
+    serial_write(buf,strlen(buf));
+}
+
+void serial_puts_P(PGM_P buf) {
+    char ch;
+    while((ch = pgm_read_byte(buf++))) {
+        serial_putc(ch);
+    }
 }
 
 unsigned char serial_flags = SERIAL_ECHO || SERIAL_DLE;

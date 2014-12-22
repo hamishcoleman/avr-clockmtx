@@ -5,6 +5,8 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
+#include <avr/pgmspace.h>
+
 /* State flags */
 #define SERIAL_ECHO     0x01
 #define SERIAL_INDLE    0x02
@@ -25,6 +27,8 @@ void serial_init(unsigned int);
 void serial_putc(unsigned char);
 
 void serial_write(unsigned char*, int);
+void serial_puts(unsigned char *);
+void serial_puts_P(PGM_P);
 
 void handle_rx_packet(unsigned char *,unsigned char);
 
