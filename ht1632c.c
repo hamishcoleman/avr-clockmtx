@@ -29,8 +29,6 @@
         // set as output and all high
 
 
-char leds[32];  //the screen array, 1 byte = 1 column, left to right, lsb at top.
-
 
 #define HTstartsys   0b100000000010 //start system oscillator
 #define HTstopsys    0b100000000000 //stop sytem oscillator and LED duty    <default
@@ -67,7 +65,7 @@ void HTcommand(word data) {
   HTstrobe1;
 }
 
-void HTsendscreen(void) {
+void HTsendscreen(char leds[]) {
   HTstrobe0;
   HTsend(HTwrite,10);
   for (byte mtx=0;mtx<4;mtx++)  //sending 8x8-matrices left to right, rows top to bottom, MSB left

@@ -2,7 +2,7 @@
 
 
 
-PROGMEM const unsigned char bigdigits[10][6] = {
+PROGMEM const unsigned char bigdigits[12][6] = {
   {0b01111110,
     129,129,129,129,126},            // 0
   {128,132,130,255,128,128},            // 1
@@ -14,6 +14,8 @@ PROGMEM const unsigned char bigdigits[10][6] = {
   {0x03,0x01,0xc1,0x31,0x0d,0x03},      // 7
   {0x76,0x89,0x89,0x89,0x89,0x76},      // 8
   {0x46,0x89,0x89,0x89,0x89,0x7e},      // 9
+  {0x00,0x66,0x66,0x00,0x00,0x00},      // :
+  {0x00,0x00,0x00,0x00,0x00,0x00},      // ;, but used as a " "
 };
 
 #if 0
@@ -89,3 +91,17 @@ PROGMEM const unsigned char bigdigits[10][6] = {
          // 9
 #endif
 
+/*
+ * Need to support varying widths - otherwise the colon looks wrong
+ * Also, need to support an empty column after the data, otherwise
+ * the digits run together
+ *
+ */
+
+unsigned char font_getwidth(unsigned char ch) {
+    return 6;
+}
+
+unsigned char font_getdata(unsigned char ch,unsigned char col) {
+    return pgm_read_byte(&bigdigits[ (ch-'0') ][col]);
+}
