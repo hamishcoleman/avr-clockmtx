@@ -17,9 +17,11 @@ unsigned volatile long time;
 
 void clock_init(void) {
 	ASSR |= _BV(AS2);
-	/* TODO - try again to use the CTC mode */
-	/* TCCR2 = (1<<WGM21) | (6<<CS20);	/* CTC mode and clock/256 */
-	/* OCR2 = 128;		/* TODO - set this from config.cal */
+	/* TODO - try again to use the CTC mode:
+	 * TCCR2 = (1<<WGM21) | (6<<CS20);	/* CTC mode and clock/256
+	 * OCR2 = 128;		/* TODO - set this from config.cal
+         */
+        /* _BV(CS22) | _BV(CS20) == clock/128 */
 	TCCR2=0b00000101;
 	TIMSK |= _BV(TOIE2);	/* timer2 overflow interrupt enable */
 	sei();
