@@ -29,7 +29,7 @@
         // set as output and all high
 
 
-byte leds[32];  //the screen array, 1 byte = 1 column, left to right, lsb at top. 
+char leds[32];  //the screen array, 1 byte = 1 column, left to right, lsb at top.
 
 
 #define HTstartsys   0b100000000010 //start system oscillator
