@@ -1,6 +1,7 @@
 
 TARGET:=clockmtx.hex
-OBJECT:=clockmtx.o serial.o clock.o ht1632c.o config.o font.o
+OBJECT:=clockmtx.o serial.o clock.o ht1632c.o config.o font.o \
+	version.o
 
 MCU:=atmega8
 LFUSE:=0xe2
@@ -46,6 +47,11 @@ monitor:
 
 clean:
 	rm -f $(TARGET) $(TARGET_ELF) $(OBJECT)
+
+version.o: version-auto.h
+version-auto.h: $(OBJECT:.o=.c)
+	echo '#define TARGET "$(TARGET)"' >$@
+	echo '#define VERSION "$(shell git describe --dirty)"' >>$@
 
 $(TARGET_ELF): $(OBJECT)
 

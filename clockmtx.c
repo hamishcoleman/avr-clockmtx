@@ -20,6 +20,7 @@
 #include "ht1632c.h"
 #include "config.h"
 #include "font.h"
+#include "version.h"
 
 #define byte uint8_t
 #define word uint16_t
@@ -67,6 +68,8 @@ int main(void) {  //============================================================
   //serial_init(2); // at 2Mhz, this is 38.4Kbps
   //serial_init(1); // at 2Mhz, this is 57.6Kbps
   //serial_init(0); // at 2Mhz, this is 115.2Kbps
+
+  serial_write_version();
   serial_write("Hello World\r\n",13);
 
   for (byte i=0;i<32;i++) leds[i]=0b01010101<<(i%2);  HTsendscreen();

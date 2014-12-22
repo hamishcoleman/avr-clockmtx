@@ -2,4 +2,5 @@
 clockmtx.elf
 clockmtx.hex
 clockmtx.bin
+version-auto.h
 

@@ -16,6 +16,7 @@
 #include "serial.h"
 #include "clock.h"
 #include "config.h"
+#include "version.h"
 
 void serial_init(unsigned int ubrr) {
         /* Set baud rate */
@@ -56,7 +57,7 @@ void serial_docmd(unsigned char *input) {
 			break;
 		case 'i':	/* ID */
 			serial_putc('I');
-			serial_write(message,strlen(message));
+			serial_write_version();
 			/* TODO - output more */
 			break;
 		case 'C':	/* Set calibration */
