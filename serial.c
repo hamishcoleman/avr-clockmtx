@@ -24,7 +24,7 @@ void serial_init(unsigned int ubrr) {
         UBRRL = (unsigned char)ubrr;
         /* Enable receiver and transmitter */
         UCSRB = _BV(RXCIE)| _BV(RXEN)| _BV(TXEN);
-        /* Set frame format: 8data, 2stop bit */
+        /* Set frame format: 8data, 1stop bit */
         UCSRC = _BV(URSEL)| (3<<UCSZ0);
 }
 
@@ -43,8 +43,6 @@ void serial_write(unsigned char *buf, int count) {
                 buf++;
         }
 }
-
-char *message = "wall of correct clocks - Aconex Hackathon 201207";
 
 void serial_docmd(unsigned char *input) {
 	char buf[11];
