@@ -11,19 +11,46 @@
 #include "font.h"
 #include "config.h"
 
-#define byte uint8_t
-#define word uint16_t
-
-char leds[32];  //the screen array, 1 byte = 1 column, left to right, lsb at top.
+/* This is kind of an orphan variable - we need it somewhere, but it
+ * doesnt really live here
+ */
+char screen_mode;
+unsigned long screen_mode_until;
 
 void screen_init(void) {
     HTpinsetup();
     HTsetup();
 
+    char leds[32];  //the screen array, 1 byte = 1 column, left to right, lsb at top.
+
     /* Show an initial test pattern */
-    for (byte i=0;i<32;i++) {
+    for (char i=0;i<32;i++) {
         leds[i]=0b01010101<<(i%2);
     }
+    HTsendscreen(leds);
+}
+
+void screen_puts(unsigned char *s) {
+    /* TODO : pass in number of pixels to start at the beginning of the string */
+
+    /* render the screen buffer to the bitmap */
+    char leds[32];  //the screen array, 1 byte = 1 column, left to right, lsb at top.
+
+    unsigned char col=0;
+    unsigned char ch;
+    while(ch=*s++) {
+        unsigned char width = font_getwidth(ch);
+        for (unsigned char i=0; i<width; i++) {
+            if (col>31) {
+                /* no more room on the display, stop adding data  */
+                continue;
+            }
+            leds[col++] = font_getdata(ch,i);
+        }
+    }
+    /* TODO : clear out any remaining unused columns? */
+
+    /* send the bitmap to the screen controller */
     HTsendscreen(leds);
 }
 
@@ -37,7 +64,7 @@ char * itoa_zerofill(unsigned char val, char *p) {
     return p;
 }
 
-void renderclock(unsigned long time) {
+void screen_showclock(unsigned long time) {
     char sec, minute, hour;
     unsigned long secs,mins;
 
@@ -67,22 +94,5 @@ void renderclock(unsigned long time) {
     p++;
     itoa_zerofill(minute,p);
 
-    /* render the screen buffer to the bitmap */
-    unsigned char col=0;
-    p=buf;
-    unsigned char ch;
-    while(ch=*p++) {
-        unsigned char width = font_getwidth(ch);
-        for (unsigned char i=0; i<width; i++) {
-            if (col>32) {
-                /* no more room on the display, stop adding data  */
-                continue;
-            }
-            leds[col++] = font_getdata(ch,i);
-        }
-    }
-
-    /* send the bitmap to the screen controller */
-    HTsendscreen(leds);
+    screen_puts(buf);
 }
-

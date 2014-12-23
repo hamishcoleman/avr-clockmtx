@@ -55,19 +55,49 @@ int main(void) {  //============================================================
   serial_puts_P(version);
   serial_puts("Hello World\r\n");
 
+    screen_puts("HELLO WORLD");
+    screen_mode=SCREEN_MODE_TEXT;
+    screen_mode_until=time+10;
+
     unsigned long time_last=200;
 
   while(1){ 
-         if (key1) {if (changing>250) incsec(20); else {changing++; incsec(1);} }
-    else if (key2) {if (changing>250) decsec(20); else {changing++; decsec(1);} }
-    else if (key3) {if (!changing) {changing=1; bright=(bright+1)%4; HTbrightness(brights[bright]);} } //only once per press
-    else changing=0;
+    if (key1) {
+        if (!changing) {
+            changing=1;
+            screen_puts(config.tz);
+            screen_mode=SCREEN_MODE_TEXT;
+            screen_mode_until=time+10;
+        }
+    } else if (key2) {
+        if (!changing) {
+            changing=1;
+            screen_puts("ClockMTX");
+            screen_mode=SCREEN_MODE_TEXT;
+            screen_mode_until=time+10;
+        }
+    } else if (key3) {
+        if (!changing) {
+            changing=1;
+            bright=(bright+1)%4;
+            HTbrightness(brights[bright]);
+        }
+        //only once per press
+    } else {
+        changing=0;
+    }
 
     if (time!=time_last) {
         /* Run the rendering only once a second */
 	time_last=time;
 
-	renderclock(time);
+        if (time > screen_mode_until) {
+            screen_mode=0;
+        }
+
+        if (screen_mode==0) {
+            screen_showclock(time);
+        }
 
 	config_save_if_dirty();
     }

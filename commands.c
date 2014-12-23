@@ -10,6 +10,7 @@
 #include "clock.h"
 #include "config.h"
 #include "version.h"
+#include "screen.h"
 
 
 /*
@@ -78,6 +79,14 @@ void handle_rx_packet(unsigned char *input,unsigned char size) {
 			ltoa(config.offset,p,10);
 			serial_puts(p);
 			break;
+                case 'M':       /* Set message */
+                        {
+                        unsigned char * p1 = strtok(&input[1],",");
+                        screen_mode = SCREEN_MODE_TEXT;
+                        screen_mode_until = time+atoi(p1);
+                        screen_puts(strtok(NULL,","));
+                        break;
+                        }
 	}
 	serial_putc('\r');
 	serial_putc('\n');
