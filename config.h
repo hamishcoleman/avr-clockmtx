@@ -13,7 +13,8 @@ struct config {
 	unsigned long	last_time;	/* last time config saved */
 	unsigned char	tz[8];		/* asciiz name for this timezone */
 	long	offset;			/* offset from UTC for this timezone */
-	unsigned char	cal;		/* clock crystal calibration value */
+	unsigned char	cal;		/* onboard RC oscillator calibration value */
+        /* TODO: drift or 32.768Khz trimming value */
 };
 
 extern struct config config;

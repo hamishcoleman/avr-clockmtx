@@ -13,7 +13,10 @@ unsigned volatile long time;
 
 void clock_init(void) {
 	ASSR |= _BV(AS2);
-	/* TODO - try again to use the CTC mode:
+	/* TODO - try again to use the CTC mode, which would allow us to
+         * try storing the xtal trimming config - and autocalc it from a
+         * series of time set commands
+         *
 	 * TCCR2 = (1<<WGM21) | (6<<CS20);	/* CTC mode and clock/256
 	 * OCR2 = 128;		/* TODO - set this from config.cal
          */

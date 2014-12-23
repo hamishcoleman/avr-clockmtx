@@ -37,24 +37,25 @@ byte brights[4]={0,2,6,15}; //brightness levels
 
 int main(void) {  //==================================================================== main ==================
 
-  calibraterc();
+    config_load();
+    // TODO: Possibly set OSCCAL from config
 
-  screen_init();
+    /* Use watch crystal to set OSCCAL */
+    calibraterc();
 
-  keysetup();
+    /* Record the new OSCCAL in our config */
+    config.cal = OSCCAL;
 
-  config_load();
-  clock_init();
+    screen_init();
+    clock_init();
+    serial_init(12); // at 2Mhz, this gives 9k6bps (at 1Mhz, 4k8)
 
-  serial_init(12); // at 2Mhz, this gives 9k6bps (at 1Mhz, 4k8)
-  //serial_init(5); // at 2Mhz, this gives 20.8Kbps, which works for me as 19.2K
-  //serial_init(2); // at 2Mhz, this is 38.4Kbps
-  //serial_init(1); // at 2Mhz, this is 57.6Kbps
-  //serial_init(0); // at 2Mhz, this is 115.2Kbps
+    keysetup();
 
-  serial_puts_P(version);
-  serial_puts("Hello World\r\n");
+    serial_puts_P(version);
+    serial_puts(" Hello World\r\n");
 
+    /* TODO: show the version here */
     screen_puts("HELLO WORLD");
     screen_mode=SCREEN_MODE_TEXT;
     screen_mode_until=time+10;
