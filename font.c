@@ -18,7 +18,7 @@ void font_init(void) {
 /*
  * grumble, harvard architecture
  */
-char font_readbyte(char fontnr,unsigned short offset) {
+unsigned char font_readbyte(char fontnr,short offset) {
     switch (fontnr) {
         case 0: /* ram font patch */
             if (offset>sizeof(font_0)) {
@@ -34,7 +34,7 @@ char font_readbyte(char fontnr,unsigned short offset) {
     return 0;
 }
 
-void font_writebyte(char fontnr, unsigned short offset, unsigned char ch) {
+void font_writebyte(char fontnr, short offset, unsigned char ch) {
     if (fontnr!=0) {
         return;
     }

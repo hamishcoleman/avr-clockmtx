@@ -22,6 +22,8 @@
 #include "calibraterc.h"
 #include "version.h"
 #include "screen.h"
+#include "font.h"
+#include "ht1632c.h"
 
 #define byte uint8_t
 
