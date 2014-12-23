@@ -84,7 +84,7 @@ void handle_rx_packet(unsigned char *input,unsigned char size) {
                         unsigned char * p1 = strtok(&input[1],",");
                         screen_mode = SCREEN_MODE_TEXT;
                         screen_mode_until = time+atoi(p1);
-                        screen_puts(strtok(NULL,","));
+                        screen_puts(strtok(NULL,0));
                         break;
                         }
 	}
