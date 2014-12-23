@@ -78,8 +78,9 @@ z	GET TZ		0	1	"z"		"zAEDT"
 Z	SET TZ		1		"ZAEDT"		"ZAEDT"
 o	GET TZ OFFSET	1	2	"oAEDT"		"oAEDT,123"
 O	SET TZ OFFSET	2		"OAEDT,123"	"OAEDT,123"
-c	GET CAL		0	1	"c"		"C123"
+c	GET OSCCAL	0	1	"c"		"C123"
 C	SET CAL		1		"C123"		"C123"
+M       SET MESSAGE     2               "M10,hello"
 
 Future?:
 Brightness
