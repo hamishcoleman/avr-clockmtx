@@ -62,7 +62,7 @@ void renderclock(unsigned long time) {
     if (sec%2) {
         *p=':';
     } else {
-        *p=';';
+        *p=' ';
     }
     p++;
     itoa_zerofill(minute,p);

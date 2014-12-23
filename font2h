@@ -1,0 +1,143 @@
+#!/usr/bin/env perl
+use warnings;
+use strict;
+#
+# Take a simple font input file and generate c code
+#
+
+use Data::Dumper;
+$Data::Dumper::Indent = 1;
+$Data::Dumper::Sortkeys = 1;
+$Data::Dumper::Quotekeys = 0;
+
+my $db;
+my $state;
+
+while(<>) {
+    chomp;
+    
+    s/#.*//;
+    s/^\s*//;    
+    s/\s*$//;    
+
+    if (m/^s\s*'(.)'$/) {
+        $state = undef;
+        $state->{char}=$1;
+        next;
+    }
+
+    if (m/^nogap$/) {
+        $state->{nogap} = 1;
+    }
+
+    if (m/[x.]+/) {
+        y/x./10/;
+        push @{$state->{rows}},$_;
+        next;
+    }
+
+    if (m/^e$/) {
+        my $charid;
+        if (defined($state->{char})) {
+            $charid = ord($state->{char});
+        } else {
+            $charid = 0;
+        }
+        my $rows = scalar(@{$state->{rows}});
+        my $cols = length($state->{rows}[0]);
+        # sanity
+        if($rows>8) {
+            die("Too many rows");
+        }
+
+        if (defined($state->{nogap})) {
+            $db->{data}[$charid]{nogap} = $state->{nogap};
+        } else {
+            $db->{data}[$charid]{nogap} = 0;
+        }
+        $db->{data}[$charid]{width} = $cols;
+        for my $col (0..$cols-1) {
+            my $coldata='';
+            for my $row (0..$rows-1) {
+                my $rowdata = $state->{rows}[$row];
+                my $pixel;
+                if (length($rowdata)>$col) {
+                    $pixel = substr($rowdata,$col,1);
+                }
+                if (!defined($pixel) || ($pixel ne '1')) {
+                    $pixel = '0';
+                }
+                $coldata = $pixel . $coldata;
+            }
+            $db->{data}[$charid]{cols}[$col] = $coldata;
+        }
+        $state = undef;
+    }
+}
+
+
+$state=undef;
+
+# set some defaults
+$state->{charid_start} = 0;
+$state->{count} = 0;
+$state->{nogap} = 0;
+$state->{width} = 0;
+$state->{data} = '';
+
+# Note: we run through the loop one more time than needed, which will flush out any
+# non undef chars at the end of the array
+for my $charid (0..@{$db->{data}}) {
+    my $char = $db->{data}[$charid];
+    my $this_data;
+
+    # empty chars
+    if (!defined($char)) {
+        $char->{width} = 0;
+        $char->{nogap} = 0;
+        $this_data = '';
+    } else {
+        $this_data = sprintf("/* '%c' */\n",$charid);
+        for my $coldata (@{$char->{cols}}) {
+            $this_data .= sprintf("\t0b%s,\n",$coldata);
+        }
+    }
+
+    # does this new char match the old run?
+    if (($char->{width} == $state->{width}) && ($char->{nogap} == $state->{nogap}) && ($state->{count}<16)) {
+        # append new data to the old
+        $state->{count}++;
+        $state->{data} .= $this_data;
+    } else {
+        # output the old data and reset
+        if ($state->{data}) {
+            printf("/* count=%i, nogap=%i, width=%i, start=%i */\n",
+                $state->{count},
+                $state->{nogap},
+                $state->{width},
+                $state->{charid_start},
+            );
+            printf("\t0x%02x, 0x%02x,\n",
+                $state->{count}<<4 | $state->{nogap}<<3 | ($state->{width}-1),
+                $state->{charid_start},
+            );
+            printf("%s\n\n",$state->{data});
+        }
+
+        $state = undef;
+        $state->{charid_start}=$charid;
+        $state->{count}=1;
+        $state->{width}=$char->{width};
+        $state->{nogap}=$char->{nogap};
+        $state->{data}=$this_data;
+    }
+}
+
+printf("/* end */\n");
+printf("0,\n");
+
+# Debug
+#print("\n\n#if 0\n");
+#print Dumper($db);
+#print("#endif\n");
+
