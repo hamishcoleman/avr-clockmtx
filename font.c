@@ -30,7 +30,7 @@ short font_getheader(unsigned char ch) {
 }
 
 unsigned char font_getwidth(unsigned char ch) {
-    unsigned short p = font_getheader(ch);
+    short p = font_getheader(ch);
 
     /* TODO - better error handling? */
     if (p<0) {
@@ -54,7 +54,7 @@ unsigned char font_getwidth(unsigned char ch) {
 }
 
 unsigned char font_getdata(unsigned char ch,unsigned char col) {
-    unsigned short p = font_getheader(ch);
+    short p = font_getheader(ch);
 
     /* TODO - better error handling? */
     if (p<0) {

@@ -35,6 +35,7 @@ void screen_puts(unsigned char *s) {
 
     /* render the screen buffer to the bitmap */
     char leds[32];  //the screen array, 1 byte = 1 column, left to right, lsb at top.
+    memset(leds,0,sizeof(leds));
 
     unsigned char col=0;
     unsigned char ch;
@@ -48,7 +49,6 @@ void screen_puts(unsigned char *s) {
             leds[col++] = font_getdata(ch,i);
         }
     }
-    /* TODO : clear out any remaining unused columns? */
 
     /* send the bitmap to the screen controller */
     HTsendscreen(leds);
