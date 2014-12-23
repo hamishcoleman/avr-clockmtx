@@ -48,6 +48,7 @@ int main(void) {  //============================================================
 
     screen_init();
     clock_init();
+    font_init();
     serial_init(12); // at 2Mhz, this gives 9k6bps (at 1Mhz, 4k8)
 
     keysetup();

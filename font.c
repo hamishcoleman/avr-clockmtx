@@ -1,15 +1,55 @@
 #include <avr/pgmspace.h>
 
+#include <string.h>
+#include "font.h"
+
+unsigned char font_0[FONT_RAMSIZE];
+
 PROGMEM const unsigned char font_1[] = {
 #include "font-1.h"
 };
 
-short font_getheader(unsigned char ch) {
+#define FONT_MAX        1 /* only two fonts */
+
+void font_init(void) {
+    memset(&font_0,0,sizeof(font_0));
+}
+
+/*
+ * grumble, harvard architecture
+ */
+char font_readbyte(char fontnr,unsigned short offset) {
+    switch (fontnr) {
+        case 0: /* ram font patch */
+            if (offset>sizeof(font_0)) {
+                return 0;
+            }
+            return font_0[offset];
+        case 1: /* flash font */
+            if (offset>sizeof(font_1)) {
+                return 0;
+            }
+            return pgm_read_byte(&font_1[offset]);
+    }
+    return 0;
+}
+
+void font_writebyte(char fontnr, unsigned short offset, unsigned char ch) {
+    if (fontnr!=0) {
+        return;
+    }
+    if (offset>FONT_RAMSIZE) {
+        return;
+    }
+    font_0[offset] = ch;
+}
+
+short font_findheader(char fontnr, unsigned char ch) {
     unsigned short p = 0;
-    unsigned char flags = pgm_read_byte(&font_1[p]);
+    unsigned char flags = font_readbyte(fontnr,p);
 
     while(flags!=0) {
-        unsigned char start = pgm_read_byte(&font_1[p+1]);
+        unsigned char start = font_readbyte(fontnr,p+1);
         unsigned char count = flags >>4;
         unsigned char width = (flags & 0x7) +1;
 
@@ -22,7 +62,7 @@ short font_getheader(unsigned char ch) {
         p += 2; /* skip header */
         p += (count*width); /* skip data */
 
-        flags = pgm_read_byte(&font_1[p]);
+        flags = font_readbyte(fontnr,p);
     }
 
     /* didnt find a header before we fell off the end of the list */
@@ -30,14 +70,22 @@ short font_getheader(unsigned char ch) {
 }
 
 unsigned char font_getwidth(unsigned char ch) {
-    short p = font_getheader(ch);
+    short p;
 
-    /* TODO - better error handling? */
-    if (p<0) {
+    char fontnr = 0;
+    p=font_findheader(fontnr,ch);
+    if (p==-1) {
+        fontnr++;
+        p=font_findheader(fontnr,ch);
+    }
+    /* FIXME - if another font is added, this needs to turn into a loop */
+
+    /* TODO - do missing chars have nonzero width? */
+    if (p==-1) {
         return 0;
     }
 
-    unsigned char flags = pgm_read_byte(&font_1[p]);
+    unsigned char flags = font_readbyte(fontnr,p);
     unsigned char count = flags >>4;
     unsigned char width = (flags & 0x7) +1;
     unsigned char nogap = flags >>3 & 1;
@@ -54,17 +102,25 @@ unsigned char font_getwidth(unsigned char ch) {
 }
 
 unsigned char font_getdata(unsigned char ch,unsigned char col) {
-    short p = font_getheader(ch);
+    short p;
 
-    /* TODO - better error handling? */
-    if (p<0) {
+    char fontnr = 0;
+    p=font_findheader(fontnr,ch);
+    if (p==-1) {
+        fontnr++;
+        p=font_findheader(fontnr,ch);
+    }
+    /* FIXME - if another font is added, this needs to turn into a loop */
+
+    if (p==-1) {
+        /* missing chars have blank data */
         return 0;
     }
 
-    unsigned char flags = pgm_read_byte(&font_1[p]);
+    unsigned char flags = font_readbyte(fontnr,p);
     unsigned char count = flags >>4;
     unsigned char width = (flags & 0x7) +1;
-    unsigned char start = pgm_read_byte(&font_1[p+1]);
+    unsigned char start = font_readbyte(fontnr,p+1);
 
     if (col >= width) {
         /* anything out of bounds is padding */
@@ -73,5 +129,5 @@ unsigned char font_getdata(unsigned char ch,unsigned char col) {
 
     p+=2; /* skip header */
     p+= (ch - start)*width +col;
-    return pgm_read_byte(&font_1[p]);
+    return font_readbyte(fontnr,p);
 }

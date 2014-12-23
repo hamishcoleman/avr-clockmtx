@@ -70,6 +70,7 @@ to 10 chars long and are separated by a comma or terminated with a CR
 
 code	name		inparam	out	in		out
 C	SET CAL		1		"C123"		"C123"
+F       SET FONT0       2               "F1,12E723"
 M       SET MESSAGE     2               "M10,hello"
 O	SET TZ OFFSET	2		"OAEDT,123"	"OAEDT,123"
 P	PONG			0	"P"
