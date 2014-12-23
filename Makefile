@@ -62,6 +62,9 @@ $(TARGET_ELF): $(OBJECT)
 %.h: %.font
 	./font2h $^ >$@
 
+%.pbm: %.font
+	./font2h --output=pbm $^ >$@
+
 %.elf: %.o
 	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $^
 
