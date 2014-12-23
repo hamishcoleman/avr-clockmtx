@@ -88,6 +88,37 @@ while(<>) {
     }
 }
 
+sub print_section_head {
+    my ($state) = shift;
+
+    if ($option->{output} eq 'h') {
+        printf("/* count=%i, nogap=%i, width=%i, start=%i */\n",
+            $state->{count},
+            $state->{nogap},
+            $state->{width},
+            $state->{charid_start},
+        );
+        printf("\t0x%02x, 0x%02x,\n",
+            $state->{count}<<4 | $state->{nogap}<<3 | ($state->{width}-1),
+            $state->{charid_start},
+        );
+    }
+}
+
+sub print_char_data {
+    my $data = shift;
+
+    if ($option->{output} eq 'h') {
+        for my $this_data (@{$data}) {
+            printf("/* '%c' */\n",$this_data->{charid});
+            for my $coldata (@{$this_data->{cols}}) {
+                printf("\t0b%s,\n",$coldata);
+            }
+        }
+        printf("\n\n");
+    }
+}
+
 if ($option->{output} eq 'h') {
     $state=undef;
 
@@ -108,33 +139,29 @@ if ($option->{output} eq 'h') {
         if (!defined($char)) {
             $char->{width} = 0;
             $char->{nogap} = 0;
-            $this_data = '';
+            $this_data = undef;
         } else {
-            $this_data = sprintf("/* '%c' */\n",$charid);
+            $this_data->{charid} = $charid;
+            #$this_data = sprintf("/* '%c' */\n",$charid);
             for my $coldata (@{$char->{cols}}) {
-                $this_data .= sprintf("\t0b%s,\n",$coldata);
+                push @{$this_data->{cols}},$coldata;
+                #$this_data .= sprintf("\t0b%s,\n",$coldata);
             }
         }
 
         # does this new char match the old run?
-        if (($char->{width} == $state->{width}) && ($char->{nogap} == $state->{nogap}) && ($state->{count}<16)) {
+        if (($char->{width} == $state->{width}) && ($char->{nogap} == $state->{nogap}) && ($state->{count}<15)) {
             # append new data to the old
             $state->{count}++;
-            $state->{data} .= $this_data;
+            if (defined($this_data)) {
+                push @{$state->{data}},$this_data;
+            }
         } else {
             # output the old data and reset
-            if ($state->{data}) {
-                printf("/* count=%i, nogap=%i, width=%i, start=%i */\n",
-                    $state->{count},
-                    $state->{nogap},
-                    $state->{width},
-                    $state->{charid_start},
-                );
-                printf("\t0x%02x, 0x%02x,\n",
-                    $state->{count}<<4 | $state->{nogap}<<3 | ($state->{width}-1),
-                    $state->{charid_start},
-                );
-                printf("%s\n\n",$state->{data});
+            if ($state->{data} && $state->{width}) {
+                print_section_head($state);
+                #printf("%s\n\n",$state->{data});
+                print_char_data($state->{data});
             }
 
             $state = undef;
@@ -142,7 +169,7 @@ if ($option->{output} eq 'h') {
             $state->{count}=1;
             $state->{width}=$char->{width};
             $state->{nogap}=$char->{nogap};
-            $state->{data}=$this_data;
+            push @{$state->{data}},$this_data;
         }
     }
 
