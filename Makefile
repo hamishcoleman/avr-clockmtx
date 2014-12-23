@@ -55,7 +55,7 @@ version-auto.h: $(OBJECT:.o=.c)
 	echo '#define TARGET "$(TARGET)"' >$@
 	echo '#define VERSION "$(shell git describe --dirty)"' >>$@
 
-font.c: font-1.h
+font.o: font-1.h
 
 $(TARGET_ELF): $(OBJECT)
 
