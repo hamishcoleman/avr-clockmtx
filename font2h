@@ -91,6 +91,8 @@ while(<>) {
 sub print_section_head {
     my ($state) = shift;
 
+    my $flags = $state->{count}<<4 | $state->{nogap}<<3 | ($state->{width}-1);
+
     if ($option->{output} eq 'h') {
         printf("/* count=%i, nogap=%i, width=%i, start=%i */\n",
             $state->{count},
@@ -99,9 +101,12 @@ sub print_section_head {
             $state->{charid_start},
         );
         printf("\t0x%02x, 0x%02x,\n",
-            $state->{count}<<4 | $state->{nogap}<<3 | ($state->{width}-1),
+            $flags,
             $state->{charid_start},
         );
+    }
+    if ($option->{output} eq 'hex') {
+        printf("%02x%02x",$flags,$state->{charid_start});
     }
 }
 
@@ -117,9 +122,26 @@ sub print_char_data {
         }
         printf("\n\n");
     }
+    if ($option->{output} eq 'hex') {
+        for my $this_data (@{$data}) {
+            for my $coldata (@{$this_data->{cols}}) {
+                printf("%02x",oct("0b".$coldata));
+            }
+        }
+    }
 }
 
-if ($option->{output} eq 'h') {
+sub print_final {
+    if ($option->{output} eq 'h') {
+        printf("/* end */\n");
+        printf("0,\n");
+    }
+    if ($option->{output} eq 'hex') {
+        printf("00\n");
+    }
+}
+
+if ($option->{output} eq 'h' or $option->{output} eq 'hex') {
     $state=undef;
 
     # set some defaults
@@ -173,8 +195,7 @@ if ($option->{output} eq 'h') {
         }
     }
 
-    printf("/* end */\n");
-    printf("0,\n");
+    print_final();
 }
 
 if ($option->{output} eq 'pbm') {
