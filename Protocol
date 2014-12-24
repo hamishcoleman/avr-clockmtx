@@ -77,11 +77,50 @@ P	PONG			0	"P"
 T	SET TIME	1		"T123"		"T123"
 Z	SET TZ		1		"ZAEDT"		"ZAEDT"
 c	GET OSCCAL	0	1	"c"		"C123"
+f       GET FONT0       0               "f"             "=XX,XX,XX,XX..."
 i	GET ID/VER	0		"i"		"Ixyz"
 o	GET TZ OFFSET	1	2	"oAEDT"		"oAEDT,123"
 p	PING		0		"p"		"P"
 t	GET TIME	0	1	"t"		"T123"
 z	GET TZ		0	1	"z"		"zAEDT"
+
+Font data format:
+The SET FONT0 command will patch the RAM font0 structure with the provided
+hex digits.  Using this, a number of new or updated glyphs can be uploaded
+(and will be used when the next screen is rendered - these changes do not
+take effect until the screen renders)
+
+This data is formatted as zero or more "span" sections followed by a
+single zero byte to end the font data.  Each span section starts with
+a header describing the common attributes of all the glyphs included in
+this span, followed by the font data:
+
+    +---------------------------------------+
+    | 7  | 6  | 5  | 4  | 3  | 2  | 1  | 0  |
+    +----+----+----+----+----+----+----+----+
+    |    char count     | gr |    width     |
+    +---------------------------------------+
+    |             starting char             |
+    +---------------------------------------+
+    | graphics data                         |
+    .                                       .
+    .                                       .
+    .                                       .
+
+char count:     The number of glyphs encoded in this span
+gr:             A flag indicating that this span contains "graphics" chars.
+                All non graphics chars will have an automatic empty column
+                appended when rendering (to space out the characters) when
+                "graphics" or "drawing" characters are rendered, this gap
+                is omited.
+width:          Adding 1 to this number will determine the width of all the
+                characters in this span. (effectively providing the number of
+                bytes used for each character)
+starting char:  This is the ASCII code of the first character in this span.
+
+graphics data:  The graphics data is arranged as a series of columns, with
+                "char count" groups of "width" bytes each.  The least significant
+                bit of byte is rendered at the top of the screen.
 
 Future?:
 Brightness
