@@ -88,12 +88,7 @@ unsigned char font_getwidth(unsigned char ch) {
     unsigned char flags = font_readbyte(fontnr,p);
     unsigned char count = flags >>4;
     unsigned char width = (flags & 0x7) +1;
-    unsigned char nogap = flags >>3 & 1;
-
-    if (nogap) {
-        /* this glyph has any needed gap built in, so width is right */
-        return width;
-    }
+    /* unsigned char unused = flags >>3 & 1; was nogap, then nokern */
 
     /* Otherwise, add in the padding between chars */
     width++;
@@ -107,6 +102,10 @@ unsigned char font_isnokern(unsigned char ch) {
         return 1;
     }
     return 0;
+    /* Note:
+     * proper kerning works on pairs of chars, whereas this system
+     * only looks a the current char, so it is just a quick approximation
+     */
 }
 
 unsigned char font_getdata(unsigned char ch,unsigned char col) {
