@@ -8,6 +8,7 @@ void font_init(void);
 void font_writebyte(char, short, unsigned char);
 unsigned char font_readbyte(char, short);
 unsigned char font_getwidth(unsigned char);
+unsigned char font_isnokern(unsigned char);
 unsigned char font_getdata(unsigned char,unsigned char);
 
 #endif
