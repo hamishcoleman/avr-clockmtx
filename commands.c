@@ -130,8 +130,10 @@ void handle_rx_packet(unsigned char *input,unsigned char size) {
                         short offset = 0;
                         while (offset<FONT_RAMSIZE) {
                             itoa(font_readbyte(0,offset),p,16);
+                            if (p[1]==0) {
+                                serial_putc('0');
+                            }
                             serial_puts(p);
-                            serial_putc(',');
                             offset++;
                         }
                         }
