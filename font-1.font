@@ -176,14 +176,14 @@ x....x
 e
 
 s '1'
-...x..
-..xx..
-.x.x..
-...x..
-...x..
-...x..
-...x..
-xxxxxx
+..x..
+.xx..
+x.x..
+..x..
+..x..
+..x..
+..x..
+xxxxx
 e
 
 s '2'
@@ -658,84 +658,84 @@ x.
 e
 
 s 'a'
-.....
-.....
-.xxxx
-x...x
-x...x
-x..xx
-.xx.x
+....
+....
+.xxx
+x..x
+x..x
+x.xx
+.x.x
 e
 
 s 'b'
-x....
-x....
-xxxx.
-x...x
-x...x
-x...x
-xxxx.
+x...
+x...
+xxx.
+x..x
+x..x
+x..x
+xxx.
 e
 
 s 'c'
-.....
-.....
-.xxx.
-x...x
-x....
-x...x
-.xxx.
+....
+....
+.xxx
+x...
+x...
+x...
+.xxx
 e
 
 s 'd'
-....x
-....x
-.xxxx
-x...x
-x...x
-x...x
-.xxxx
+...x
+...x
+.xxx
+x..x
+x..x
+x..x
+.xxx
 e
 
 s 'e'
-.....
-.....
-.xxx.
-x...x
-xxxx.
-x....
-.xxxx
+....
+....
+.xx.
+x..x
+xxx.
+x...
+.xxx
 e
 
 s 'f'
-..xx.
-.x..x
-.x...
-xxxx.
-.x...
-.x...
-.x...
+..xx
+.x..
+.x..
+xxx.
+.x..
+.x..
+.x..
 e
 
 s 'g'
-.....
-.....
-.xxx.
-x...x
-x...x
-.xxxx
-....x
-xxxx.
+....
+....
+.xx.
+x..x
+x..x
+.xxx
+...x
+xxx.
 e
 
 s 'h'
-x....
-x....
-x.xx.
-xx..x
-x...x
-x...x
-x...x
+x...
+x...
+x.x.
+xx.x
+x..x
+x..x
+x..x
 e
 
 s 'i'
@@ -800,55 +800,55 @@ x..x
 e
 
 s 'o'
-.....
-.....
-.xxx.
-x...x
-x...x
-x...x
-.xxx.
+....
+....
+.xx.
+x..x
+x..x
+x..x
+.xx.
 e
 
 s 'p'
-.....
-.....
-xxxx.
-x...x
-x...x
-xxxx.
+....
+....
+xxx.
+x..x
+x..x
+xxx.
 x
 x
 e
 
 s 'q'
-.....
-.....
-.xxxx
-x...x
-x...x
-.xxxx
-....x
-....x
+....
+....
+.xxx
+x..x
+x..x
+.xxx
+...x
+...x
 e
 
 s 'r'
-.....
-.....
-x.xx.
-xx..x
-x....
-x....
-x....
+....
+....
+x.xx
+xx..
+x...
+x...
+x...
 e
 
 s 's'
-.....
-.....
-.xxxx
-x....
-.xxx.
-....x
-xxxx.
+....
+....
+.xxx
+x...
+.xx.
+...x
+xxx.
 e
 
 s 't'
@@ -862,13 +862,13 @@ xxx.
 e
 
 s 'u'
-.....
-.....
-x...x
-x...x
-x...x
-x..xx
-.xx.x
+....
+....
+x..x
+x..x
+x..x
+x.xx
+.x.x
 e
 
 s 'v'
@@ -902,24 +902,24 @@ x...x
 e
 
 s 'y'
-.....
-.....
-x...x
-x...x
-x...x
-.xxxx
-....x
-xxxx.
+....
+....
+x..x
+x..x
+x..x
+.xxx
+...x
+xxx.
 e
 
 s 'z'
-.....
-.....
-xxxxx
-...x.
-..x..
-.x...
-xxxxx
+....
+....
+xxxx
+..x.
+.x..
+x...
+xxxx
 e
 
 s '{'
