@@ -49,8 +49,7 @@ void screen_puts(unsigned char *s) {
             }
             unsigned char data = font_getdata(ch,i);
 
-            /* FIXME - use the isnokern(ch) call instead of hardcoding */
-            if (ch==' ') {
+            if (font_isnokern(ch)) {
                 /* this glyph should not kern, so create a match any mask */
                 kerning_mask = 0xff;
             } else {
