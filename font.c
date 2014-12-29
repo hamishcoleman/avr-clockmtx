@@ -80,9 +80,9 @@ unsigned char font_getwidth(unsigned char ch) {
     }
     /* FIXME - if another font is added, this needs to turn into a loop */
 
-    /* TODO - do missing chars have nonzero width? */
+    /* missing chars are all 3 columns wide */
     if (p==-1) {
-        return 0;
+        return 3;
     }
 
     unsigned char flags = font_readbyte(fontnr,p);
@@ -99,6 +99,14 @@ unsigned char font_getwidth(unsigned char ch) {
     width++;
 
     return width;
+}
+
+unsigned char font_isnokern(unsigned char ch) {
+    /* FIXME - use fontdata instead of hardcoding */
+    if (ch == ' ') {
+        return 1;
+    }
+    return 0;
 }
 
 unsigned char font_getdata(unsigned char ch,unsigned char col) {
