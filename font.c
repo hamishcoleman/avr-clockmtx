@@ -69,19 +69,35 @@ short font_findheader(char fontnr, unsigned char ch) {
     return -1;
 }
 
-unsigned char font_getwidth(unsigned char ch) {
-    short p;
-
+char font_findnrheader(unsigned char ch, short *p) {
+    short hp;
     char fontnr = 0;
-    p=font_findheader(fontnr,ch);
-    if (p==-1) {
+
+    hp=font_findheader(fontnr,ch);
+    if (hp==-1) {
         fontnr++;
-        p=font_findheader(fontnr,ch);
+        hp=font_findheader(fontnr,ch);
     }
     /* FIXME - if another font is added, this needs to turn into a loop */
 
+    if (hp>=0) {
+        /* we found a font with this char */
+        if (p) {
+            *p = hp;
+        }
+        return fontnr;
+    }
+    return -1;
+}
+
+unsigned char font_getwidth(unsigned char ch) {
+    short p;
+    char fontnr;
+
+    fontnr=font_findnrheader(ch,&p);
+
     /* missing chars are all 3 columns wide */
-    if (p==-1) {
+    if (fontnr==-1) {
         return 3;
     }
 
@@ -110,16 +126,11 @@ unsigned char font_isnokern(unsigned char ch) {
 
 unsigned char font_getdata(unsigned char ch,unsigned char col) {
     short p;
+    char fontnr;
 
-    char fontnr = 0;
-    p=font_findheader(fontnr,ch);
-    if (p==-1) {
-        fontnr++;
-        p=font_findheader(fontnr,ch);
-    }
-    /* FIXME - if another font is added, this needs to turn into a loop */
+    fontnr=font_findnrheader(ch,&p);
 
-    if (p==-1) {
+    if (fontnr==-1) {
         /* missing chars have blank data */
         return 0;
     }
