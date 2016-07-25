@@ -17,16 +17,35 @@ if [ -z "$TTY" ]; then
 fi
 shift
 
+if [ ! -e "$TTY" ]; then
+    # Assuming this is a hostname
+    HOSTNAME="$TTY"
+    unset TTY
+fi
+
+TCP_PORT="$1"
+if [ -z "$TCP_PORT" ]; then
+    TCP_PORT=23
+fi
+shift
+
 ZONE_NAMES=$(dirname $0 )/zone_names
 if [ ! -e $ZONE_NAMES ]; then
     echo zone mapping file $ZONE_NAMES does not exist
     exit 1
 fi
 
-stty 9600 <$TTY
+if [ -n "$TTY" ]; then
+    stty 9600 <$TTY
+    jpnevulator --read --ascii --byte-count --timing-print --tty=$TTY &
+    READ=$!
+else
+    # hack to make the rest look right
+    TTY=/dev/tcp/"$HOSTNAME"/"$TCP_PORT"
 
-jpnevulator --read --ascii --byte-count --timing-print --tty=$TTY &
-READ=$!
+    hd <$TTY &
+    READ=$!
+fi
 
 echo -e "`date +%s` \x02t\x04 " >>$TTY # get old time
 sleep 0.1
