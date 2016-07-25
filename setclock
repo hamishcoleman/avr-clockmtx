@@ -10,8 +10,8 @@
 # 0 */4 * * * $DIR/setclock /dev/ttyUSB0 Melbourne London
 #
 
-PORT="$1"
-if [ -z "$PORT" ]; then
+TTY="$1"
+if [ -z "$TTY" ]; then
     echo need port
     exit 1
 fi
@@ -23,14 +23,14 @@ if [ ! -e $ZONE_NAMES ]; then
     exit 1
 fi
 
-stty 9600 <$PORT
+stty 9600 <$TTY
 
-jpnevulator --read --ascii --byte-count --timing-print --tty=$PORT &
+jpnevulator --read --ascii --byte-count --timing-print --tty=$TTY &
 READ=$!
 
-echo -e "`date +%s` \x02t\x04 " >>$PORT # get old time
+echo -e "`date +%s` \x02t\x04 " >>$TTY # get old time
 sleep 0.1
-echo -e "\x02T`date +%s`\x04"   >>$PORT # set time
+echo -e "\x02T`date +%s`\x04"   >>$TTY # set time
 sleep 0.1
 
 while [ -n "$1" ]; do
@@ -53,7 +53,7 @@ while [ -n "$1" ]; do
     echo $ZONE_SHORT $ZONE_OLSEN
 
     OFFSET=`perl -e "use DateTime; print DateTime->now(time_zone=>'$ZONE_OLSEN')->offset();"`
-    echo -e "\x02O${ZONE_SHORT},$OFFSET\x04"   >>$PORT # set offset
+    echo -e "\x02O${ZONE_SHORT},$OFFSET\x04"   >>$TTY # set offset
 
     sleep 0.1
     echo
