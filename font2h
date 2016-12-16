@@ -34,7 +34,7 @@ while(<>) {
 
     if (m/^s\s*'\\?(.)'$/) {
         $state = undef;
-        $state->{char}=$1;
+        $state->{char}=ord($1);
         next;
     }
 
@@ -51,7 +51,7 @@ while(<>) {
     if (m/^e$/) {
         my $charid;
         if (defined($state->{char})) {
-            $charid = ord($state->{char});
+            $charid = $state->{char};
         } else {
             $charid = 0;
         }
