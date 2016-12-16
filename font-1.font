@@ -1,17 +1,6 @@
 # Font file
 #
-
-# first, a generic nothing glyph
-s
-...
-...
-xxx
-x.x
-x.x
-xxx
-...
-...
-e
+# Intended to be a good all-round font for use with the clock display
 
 s '!'
 x
