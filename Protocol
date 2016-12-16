@@ -12,6 +12,9 @@ Special chars are escaped using the DLE (0x10) char - this char will
 escape the next char. (Including itself, so to include 0x10 in the recieved
 packet the sequence 0x10,0x10 would be sent)
 TODO: consider something like ppp escaping - the escaped char is XOR 0x20
+    - this would allow the RX to sync on any STX byte as it will never occur
+      in the data.  It also would mean that some chars are illegal to
+      be escaped as they will XOR to a special char
 TODO: perhaps add xon/xoff to the escaped chars
 
 Any received char with a framing error will cause a NAK (0x15) to be sent
