@@ -27,7 +27,7 @@ build-dep:
 	apt-get install avrdude gcc-avr avr-libc
 
 burn:	$(TARGET)
-	avrdude -c $(ISP) -P $(ISP_PORT) -p $(MCU_AVRDUDE) -y -U flash:w:$<:i
+	avrdude -c $(ISP) -P $(ISP_PORT) -p $(MCU_AVRDUDE) -y -V -U flash:w:$<:i
 
 osccal:
 	avrdude -c $(ISP) -P $(ISP_PORT) -p $(MCU_AVRDUDE) -O
@@ -54,6 +54,7 @@ version.o: version-auto.h
 version-auto.h: $(OBJECT:.o=.c)
 	echo '#define TARGET "$(TARGET)"' >$@
 	echo '#define VERSION "$(shell git describe --dirty)"' >>$@
+	echo '#define DATE $(shell date +%s)' >>$@
 
 font.o: font-1.h
 
