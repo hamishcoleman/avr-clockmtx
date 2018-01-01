@@ -16,7 +16,7 @@ MCU_AVRDUDE:=m8
 all:	$(TARGET) size
 
 CC:=avr-gcc
-CFLAGS:=-g -Os -std=c99 -mmcu=$(MCU)	# -mcall-prologues
+CFLAGS:=-g -Os -std=c99 -mmcu=$(MCU)	# -mcall-prologues # -flto
 OBJCOPY:=avr-objcopy
 
 LDFLAGS:=-Wl,-section-start=.eeprom=0x810001
