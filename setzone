@@ -11,7 +11,7 @@ fi
 shift
 
 # truncate the short name as the clock only stores 8 chars
-ZONE_SHORT=$(echo "$1" | cut -c1-8)
+ZONE_SHORT=$(echo "$1" | cut -c1-7)
 
 if [ -z "$ZONE_SHORT" ]; then
     echo need zone short name
